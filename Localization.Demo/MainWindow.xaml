@@ -1,0 +1,42 @@
+﻿<Window x:Class="Localization.Demo.MainWindow" x:Name="Root" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Localization.Demo" xmlns:ul="http://rasyidf.github.io/localization" mc:Ignorable="d" Title="{ul:Translate Uid=0,Default= Demo}" Height="338.275" Width="321.899">
+    <Window.Resources>
+        <DataTemplate x:Key="LanguuageDictionaryItemTemplate">
+            <TextBlock Text="{Binding EnglishName}" />
+        </DataTemplate>
+          
+    </Window.Resources>
+    <Grid>
+        <Menu VerticalAlignment="Top" Height="19">
+            <MenuItem Header="{ul:Translate File,Uid=11}">
+                <MenuItem Header="{ul:Translate Exit,Uid=110}" />
+            </MenuItem>
+            <MenuItem Header="{ul:Translate Edit,Uid=12}">
+                <MenuItem Header="{ul:Translate Cut,Uid=120}" />
+                <MenuItem Header="{ul:Translate Copy,Uid=121}" />
+                <MenuItem Header="{ul:Translate Paste,Uid=122}" />
+                <Separator />
+                <MenuItem Header="{ul:Translate Options,Uid=123}" />
+            </MenuItem>
+            <MenuItem Header="{ul:Translate View,Uid=13}">
+                <MenuItem IsCheckable="True" Header="{ul:Translate Statusbar,Uid=130}" />
+            </MenuItem>
+            <MenuItem x:Name="mnuLanguage" Header="{ul:Translate Language,Uid=14}" />
+            <MenuItem Header="{ul:Translate Help,Uid=15}" >
+                <MenuItem Header="{ul:Translate About,Uid=150}" />
+            </MenuItem>
+        </Menu>
+        <TextBlock Margin="10,24,10,0" TextWrapping="Wrap" VerticalAlignment="Top">
+            <TextBlock.Text>
+                <ul:Translate Default="This is Dynamic Language Demo" Uid="21" />
+            </TextBlock.Text></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="10,60,0,0" TextWrapping="Wrap" Text="{ul:Translate 'Select Language :' ,Uid=22}" VerticalAlignment="Top" />
+        <ListBox x:Name="lLanguages" Height="140" Margin="10,81,10,0" VerticalAlignment="Top" ItemsSource="{Binding Cultures}" ItemTemplate="{DynamicResource LanguuageDictionaryItemTemplate}" SelectionChanged="lLanguages_SelectionChanged" />
+        <StatusBar Height="24" VerticalAlignment="Bottom">
+            <StatusBarItem Height="24" VerticalAlignment="Top">
+                <ul:Translate Default="Languages : {0}" Uid="24">
+                    <Binding ElementName="Root" Path="LanguagesCount" />
+                </ul:Translate>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

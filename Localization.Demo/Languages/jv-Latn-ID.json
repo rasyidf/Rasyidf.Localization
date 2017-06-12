@@ -1,0 +1,71 @@
+﻿{
+"EnglishName": "Javanese",
+"CultureName": "jv-Latn-ID",
+"Culture": "jv-Latn-ID",
+"Data": [
+{
+"Id": 0,
+"Title": "Conto Aplikasi"
+},
+{
+"Id": 11,
+"Header": "Berkas"
+},
+{
+"Id": 110,
+"Header": "medal"
+},
+{
+"Id": 12,
+"Header": "cundhuk"
+},
+{
+"Id": 120,
+"Header": "potong"
+},
+{
+"Id": 121,
+"Header": "Salin"
+},
+{
+"Id": 122,
+"Header": "Tempel"
+},
+{
+"Id": 123,
+"Header": "Piliyan"
+},
+{
+"Id": 13,
+"Header": "Paragan"
+},
+{
+"Id": 130,
+"Header": "Bar status"
+},
+{
+"Id": 14,
+"Header": "Basa"
+},
+{
+"Id": 15,
+"Header": "Tulung"
+},
+{
+"Id": 150,
+"Header": "babagan"
+},
+{
+"Id": 21,
+"Text": "Menika conto basa dinamis ngangge UFA.Lang"
+},
+{
+"Id": 22,
+"Text": "Pilih Bahasa yang tersedia:"
+},
+{
+"Id": 24,
+"Text": "Basa: {0}"
+}
+]
+}

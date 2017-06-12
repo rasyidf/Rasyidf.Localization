@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dictionary EnglishName="German" CultureName="de-DE" Culture="de-DE">
+  <Value Id="0" Title="Demo Window" />
+  <Value Id="11" Header="Datei" />
+  <Value Id="110" Header="Beenden" />
+  <Value Id="12" Header="Bearbeiten" />
+  <Value Id="120" Header="Ausschneiden" />
+  <Value Id="121" Header="Kopieren" />
+  <Value Id="122" Header="Einfügen" />
+  <Value Id="123" Header="Optionen" />
+  <Value Id="13" Header="Ansicht" />
+  <Value Id="130" Header="Statusleiste" />
+  <Value Id="14" Header="Sprachen" />
+  <Value Id="15" Header="Hilfe" />
+  <Value Id="150" Header="Über" />
+  <Value Id="21" Text="Dies ist Dynamisch Sprachen Demo"/>
+  <Value Id="22" Text="Verfügbare Sprachen auswählen:"/>
+  <Value Id="24" Text="Sprachen: {0}"/> 
+</Dictionary>
