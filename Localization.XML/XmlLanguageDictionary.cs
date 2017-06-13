@@ -15,24 +15,18 @@ namespace UFA.Localization.XML
             new Dictionary<string, Dictionary<string, string>>();
 
         private string _path;
+        private string _cultureId;
         private string _cultureName;
         private string _englishName;
 
         public string Path
         {
-            get { return _path; }
-            set { _path = value; }
+            get => _path; set => _path = value;
         }
 
-        public override string CultureName
-        {
-            get { return _cultureName; }
-        }
-
-        public override string EnglishName
-        {
-            get { return _englishName; }
-        }
+        public override string CultureName => _cultureName;
+        public override string EnglishName => _englishName;
+        public override string CultureId => _cultureId;
 
         public XmlLanguageDictionary(string path)
         {
@@ -60,6 +54,11 @@ namespace UFA.Localization.XML
             if (cultureNameAttribute != null)
             {
                 _cultureName = cultureNameAttribute.Value;
+            }
+            XmlAttribute cultureIdAttribute = xmlDocument.DocumentElement.Attributes["Culture"];
+            if (cultureIdAttribute != null)
+            {
+                _cultureId = cultureIdAttribute.Value;
             }
             foreach (XmlNode node in xmlDocument.DocumentElement.ChildNodes)
             {

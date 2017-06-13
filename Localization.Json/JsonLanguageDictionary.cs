@@ -15,25 +15,21 @@ namespace Localization.Json
         private Dictionary<string, Dictionary<string, string>> _data =
             new Dictionary<string, Dictionary<string, string>>();
 
+
         private string _path;
+        private string _cultureId;
         private string _cultureName;
         private string _englishName;
 
         public string Path
         {
-            get { return _path; }
-            set { _path = value; }
+            get => _path; set => _path = value;
         }
 
-        public override string CultureName
-        {
-            get { return _cultureName; }
-        }
+        public override string CultureName => _cultureName;
+        public override string EnglishName => _englishName;
+        public override string CultureId => _cultureId;
 
-        public override string EnglishName
-        {
-            get { return _englishName; }
-        }
 
         public JsonLanguageDictionary(string path)
         {
@@ -58,6 +54,10 @@ namespace Localization.Json
             if (a.ContainsKey("CultureName"))
             {
                 _cultureName = a["CultureName"].ToString();
+            }
+            if (a.ContainsKey("Culture"))
+            {
+                _cultureId = a["Culture"].ToString();
             }
             var datas = a["Data"] as List<object>;
             foreach (Dictionary<string,object> node in datas)

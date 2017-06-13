@@ -20,7 +20,7 @@ namespace UFA.Localization
 
 		public CultureInfo Culture
 		{
-			get { return CultureInfo.GetCultureInfo(CultureName); }
+			get { return CultureInfo.GetCultureInfo(CultureId); }
 		}
 
 		public static LanguageDictionary Current
@@ -80,13 +80,14 @@ namespace UFA.Localization
 				return dictionary;
 			}
 			return LanguageDictionary.Null;
-		} 
+		}
 
-		#endregion
+        #endregion
 
-		#region Overrideables
+        #region Overrideables
 
-		public abstract string CultureName { get; }
+        public abstract string CultureId { get; }
+        public abstract string CultureName { get; }
 		public abstract string EnglishName { get; }
 
         public static Dictionary<CultureInfo, LanguageDictionary> RegisteredDictionaries => _registeredDictionaries;
@@ -103,9 +104,10 @@ namespace UFA.Localization
 			protected override void OnLoad() { }
 			protected override void OnUnload() { }
 			protected override object OnTranslate(string uid, string vid, object defaultValue, Type type) { return defaultValue; }
-			public override string CultureName { get { return CultureInfo.InstalledUICulture.Name; } }
-			public override string EnglishName { get { return CultureInfo.InstalledUICulture.EnglishName; } }
-		}
+            public override string CultureName => CultureInfo.InstalledUICulture.NativeName;
+            public override string EnglishName => CultureInfo.InstalledUICulture.EnglishName;
+            public override string CultureId => CultureInfo.InstalledUICulture.Name;
+        }
 		#endregion		
 	}
 }
