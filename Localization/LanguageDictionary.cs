@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows;
 using System.Globalization;
-using System.ComponentModel;
 
 namespace UFA.Localization
 {
-	public abstract class LanguageDictionary
+    public abstract class LanguageDictionary
 	{
 		#region Fields
 

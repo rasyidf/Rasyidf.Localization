@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Globalization;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows;
+using System.Globalization;
 
 namespace UFA.Localization
 {
-	public sealed class LanguageProvider : ISupportInitialize
+    public sealed class LanguageProvider : ISupportInitialize
 	{
 		#region Fields
 

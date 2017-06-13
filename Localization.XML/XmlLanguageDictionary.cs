@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Xml;
-using System.Globalization;
-using System.Diagnostics;
-using System.Windows;
-using System.ComponentModel;
 namespace UFA.Localization.XML
 {
     public class XmlLanguageDictionary : LanguageDictionary

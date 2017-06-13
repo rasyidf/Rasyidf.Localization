@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel;
 using System.Globalization;
 using System.Threading;
-using System.Windows;
-using System.ComponentModel;
 
 namespace UFA.Localization
 {
-	public sealed class LanguageContext : INotifyPropertyChanged
+    public sealed class LanguageContext : INotifyPropertyChanged
 	{
 		#region Fields
 

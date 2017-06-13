@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Data;
-using System.Globalization;
-using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace UFA.Localization
 {
-	public class LanguageConverter : IValueConverter, IMultiValueConverter
+    public class LanguageConverter : IValueConverter, IMultiValueConverter
 	{
 		#region Fields
 

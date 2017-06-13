@@ -58,7 +58,7 @@ namespace Localization.Demo
            
         }
 
-        private void lLanguages_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void LLanguages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lLanguages.SelectedItem != null)
             { 

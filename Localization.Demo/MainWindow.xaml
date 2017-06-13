@@ -30,7 +30,7 @@
                 <ul:T Default="This is Dynamic Language Demo" Uid="21" />
             </TextBlock.Text></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="10,60,0,0" TextWrapping="Wrap" Text="{ul:T 'Select Language :' ,Uid=22}" VerticalAlignment="Top" />
-        <ListBox x:Name="lLanguages" Height="140" Margin="10,81,10,0" VerticalAlignment="Top" ItemsSource="{Binding Cultures}" ItemTemplate="{DynamicResource LanguuageDictionaryItemTemplate}" SelectionChanged="lLanguages_SelectionChanged" />
+        <ListBox x:Name="lLanguages" Height="140" Margin="10,81,10,0" VerticalAlignment="Top" ItemsSource="{Binding Cultures}" ItemTemplate="{DynamicResource LanguuageDictionaryItemTemplate}" SelectionChanged="LLanguages_SelectionChanged" />
         <StatusBar Height="24" VerticalAlignment="Bottom">
             <StatusBarItem Height="24" VerticalAlignment="Top">
                 <ul:T Default="Languages : {0}" Uid="24">
