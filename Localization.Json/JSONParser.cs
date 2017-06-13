@@ -113,20 +113,17 @@ namespace Localization.Json
             }
             if (type == typeof(int))
             {
-                int result;
-                int.TryParse(json, out result);
+                int.TryParse(json, out int result);
                 return result;
             }
             if (type == typeof(float))
             {
-                float result;
-                float.TryParse(json, out result);
+                float.TryParse(json, out float result);
                 return result;
             }
             if (type == typeof(double))
             {
-                double result;
-                double.TryParse(json, out result);
+                double.TryParse(json, out double result);
                 return result;
             }
             if (type == typeof(bool))
@@ -237,14 +234,12 @@ namespace Localization.Json
             {
                 if (json.Contains("."))
                 {
-                    double result;
-                    double.TryParse(json, out result);
+                    double.TryParse(json, out double result);
                     return result;
                 }
                 else
                 {
-                    int result;
-                    int.TryParse(json, out result);
+                    int.TryParse(json, out int result);
                     return result;
                 }
             }
@@ -265,14 +260,12 @@ namespace Localization.Json
             if (elems.Count % 2 != 0)
                 return instance;
 
-            Dictionary<string, FieldInfo> nameToField;
-            Dictionary<string, PropertyInfo> nameToProperty;
-            if (!fieldInfoCache.TryGetValue(type, out nameToField))
+            if (!fieldInfoCache.TryGetValue(type, out Dictionary<string, FieldInfo> nameToField))
             {
                 nameToField = type.GetFields().Where(field => field.IsPublic).ToDictionary(field => field.Name);
                 fieldInfoCache.Add(type, nameToField);
             }
-            if (!propertyInfoCache.TryGetValue(type, out nameToProperty))
+            if (!propertyInfoCache.TryGetValue(type, out Dictionary<string, PropertyInfo> nameToProperty))
             {
                 nameToProperty = type.GetProperties().ToDictionary(p => p.Name);
                 propertyInfoCache.Add(type, nameToProperty);
@@ -285,11 +278,9 @@ namespace Localization.Json
                 string key = elems[i].Substring(1, elems[i].Length - 2);
                 string value = elems[i + 1];
 
-                FieldInfo fieldInfo;
-                PropertyInfo propertyInfo;
-                if (nameToField.TryGetValue(key, out fieldInfo))
+                if (nameToField.TryGetValue(key, out FieldInfo fieldInfo))
                     fieldInfo.SetValue(instance, ParseValue(fieldInfo.FieldType, value));
-                else if (nameToProperty.TryGetValue(key, out propertyInfo))
+                else if (nameToProperty.TryGetValue(key, out PropertyInfo propertyInfo))
                     propertyInfo.SetValue(instance, ParseValue(propertyInfo.PropertyType, value), null);
             }
 
