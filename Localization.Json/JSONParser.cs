@@ -9,7 +9,7 @@ using System.Text;
 namespace Localization.Json
 {
 
-    public static class JSONParser
+    public static class Parser
     {
         static Stack<List<string>> splitArrayPool = new Stack<List<string>>();
         static StringBuilder stringBuilder = new StringBuilder();
