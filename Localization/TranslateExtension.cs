@@ -7,7 +7,7 @@ using System.Windows.Markup;
 namespace UFA.Localization
 {
     [ContentProperty("Parameters")]
-	public class Translate : MarkupExtension
+	public class T : MarkupExtension
 	{
 		#region Fields
 
@@ -22,9 +22,9 @@ namespace UFA.Localization
 
 		#region Initialization
 
-		public Translate() { }
+		public T() { }
 
-		public Translate(object defaultValue)
+		public T(object defaultValue)
 		{
 			this._default = defaultValue;
 		}
@@ -63,7 +63,7 @@ namespace UFA.Localization
 		}
 
 		public static readonly DependencyProperty UidProperty =
-			DependencyProperty.RegisterAttached("Uid", typeof(string), typeof(Translate), new UIPropertyMetadata(string.Empty));		 
+			DependencyProperty.RegisterAttached("Uid", typeof(string), typeof(T), new UIPropertyMetadata(string.Empty));		 
 
 		#endregion
 

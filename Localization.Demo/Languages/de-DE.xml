@@ -13,7 +13,7 @@
   <Value Id="14" Header="Sprachen" />
   <Value Id="15" Header="Hilfe" />
   <Value Id="150" Header="Über" />
-  <Value Id="21" Text="Dies ist Dynamisch Sprachen Demo"/>
+  <Value Id="21" Text="Das ist Dynamisch Sprachen Demo"/>
   <Value Id="22" Text="Verfügbare Sprachen auswählen:"/>
   <Value Id="24" Text="Sprachen: {0}"/> 
 </Dictionary>

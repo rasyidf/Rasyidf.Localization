@@ -19,7 +19,7 @@ namespace UFA.Localization
         public static void ScanLanguagesInFolder(string path)
         {
             DirectoryInfo di = new DirectoryInfo(path);
-            FileInfo[] files = di.GetFilesByExtensions("xml", "json").ToArray();
+            FileInfo[] files = di.GetFilesByExtensions(".xml", ".json").ToArray();
             for (int i = 0; i < files.Length; i++)
             {
                 var g = Path.GetFileNameWithoutExtension(files[i].Name);
@@ -27,10 +27,10 @@ namespace UFA.Localization
                 LanguageDictionary LD = LanguageDictionary.Null;
                 switch (files[i].Extension)
                 {
-                    case "xml":
+                    case ".xml":
                         LD = new XmlLanguageDictionary(filepath);
                         break;
-                    case "json":
+                    case ".json":
                         LD = new JsonLanguageDictionary(filepath);
                         break;
                 }
