@@ -1,4 +1,4 @@
-# Ufa Localization
+# UFA Localization
 
 Another Localization Framework, based on tomershamam [WPF Localization Module](http://blogs.microsoft.co.il/tomershamam/2007/10/30/wpf-localization-on-the-fly-language-selection/)
 ## Getting Started
@@ -10,7 +10,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Authors
 
-* **Rasyid,Muhammad Fahmi** - *Initial work* - [Rasyidf](https://github.com/rasyidf)
+* **Rasyid, Muhammad Fahmi** - *Initial work* - [Rasyidf](https://github.com/rasyidf)
 
 See also the list of [contributors](https://github.com/rasyidf/UFA.Localization/contributors) who participated in this project.
 
