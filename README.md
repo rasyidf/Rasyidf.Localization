@@ -1,6 +1,7 @@
-# UFA Localization
+# Rasyidf Localization
 
 Another Localization Framework, based on tomershamam [WPF Localization Module](http://blogs.microsoft.co.il/tomershamam/2007/10/30/wpf-localization-on-the-fly-language-selection/)
+
 ## Getting Started
 You can try the Localization.Demo application. and learn about this framework
 
