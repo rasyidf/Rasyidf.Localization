@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Dictionary EnglishName="English" CultureName="en-US" Culture="en-US">
-	<Value Id="0" Title="Demo Window" />
+<Pack EnglishName="English" CultureName="English" Culture="en-US">
+  <Value Id="0" Title="Demo Window" />
   <Value Id="11" Header="File" />
   <Value Id="110" Header="Exit" />
   <Value Id="12" Header="Edit" />
@@ -9,11 +9,11 @@
   <Value Id="122" Header="Paste" />
   <Value Id="123" Header="Options" />
   <Value Id="13" Header="View" />
-  <Value Id="130" Header="Status bar" /> 
-  <Value Id="14" Header="Languages" />
+  <Value Id="130" Header="Status bar" />
+  <Value Id="14" Header="BaseLanguages" />
   <Value Id="15" Header="Help" />
   <Value Id="150" Header="About" />
-  <Value Id="21" Text="This is Dynamic Language Demo with UFA.Lang"/>
-  <Value Id="22" Text="Select Available Languages:"/>
-  <Value Id="24" Text="Languages: {0}"/>
-</Dictionary>
+  <Value Id="21" Text="This is Dynamic Language Demo with UFA.Lang" />
+  <Value Id="22" Text="Select Available Languages:" />
+  <Value Id="24" Text="BaseLanguages: {0}" />
+</Pack>

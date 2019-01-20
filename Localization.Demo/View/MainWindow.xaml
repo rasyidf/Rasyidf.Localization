@@ -1,0 +1,96 @@
+﻿<Window
+    x:Class="Localization.Demo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:demo="clr-namespace:Localization.Demo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ul="clr-namespace:Rasyidf.Localization;assembly=Rasyidf.Localization"
+    x:Name="Root"
+    x:Uid="Root"
+    Width="321.899"
+    Height="338.275"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <demo:MainWindowViewModel />
+
+    </Window.DataContext>
+    <Window.Title>
+        <ul:Tr Uid="0" Default="Demo" />
+    </Window.Title>
+    <Window.Resources>
+        <DataTemplate x:Key="LanguageDictionaryItemTemplate">
+            <TextBlock><Run Text="{Binding EnglishName, Mode=OneWay}" />
+                (<Run Text="{Binding CultureName, Mode=OneWay}" />
+                )</TextBlock>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Menu Height="19" VerticalAlignment="Top">
+            <MenuItem Header="{ul:Tr File, Uid=11}">
+                <MenuItem Header="{ul:Tr Exit, Uid=110}" />
+            </MenuItem>
+            <MenuItem Header="{ul:Tr Edit, Uid=12}">
+                <MenuItem Header="{ul:Tr Cut, Uid=120}" />
+                <MenuItem Header="{ul:Tr Copy, Uid=121}" />
+                <MenuItem Header="{ul:Tr Paste, Uid=122}" />
+                <Separator />
+                <MenuItem Header="{ul:Tr Options, Uid=123}" />
+            </MenuItem>
+            <MenuItem Header="{ul:Tr View, Uid=13}">
+                <MenuItem Header="{ul:Tr Status bar, Uid=130}" IsCheckable="True" />
+            </MenuItem>
+            <MenuItem
+                Header="{ul:Tr Language,
+                               Uid=14}"
+                ItemTemplate="{DynamicResource LanguageDictionaryItemTemplate}"
+                ItemsSource="{Binding Cultures, Mode=OneWay}">
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Command" Value="{Binding ChangeLanguageCommand}" />
+                        <Setter Property="CommandParameter" Value="{Binding}" />
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+            </MenuItem>
+            <MenuItem Header="{ul:Tr Help, Uid=15}">
+                <MenuItem Header="{ul:Tr About, Uid=150}" />
+            </MenuItem>
+        </Menu>
+        <TextBlock
+            Margin="10,24,10,0"
+            VerticalAlignment="Top"
+            TextWrapping="Wrap">
+            <TextBlock.Text>
+                <ul:Tr Uid="21" Default="This is Dynamic Language Demo" />
+            </TextBlock.Text>
+        </TextBlock>
+        <TextBlock
+            Margin="10,60,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="{ul:Tr 'Select Language :',
+                         Uid=22}"
+            TextWrapping="Wrap" />
+        <ListBox
+            Height="140"
+            Margin="10,81,10,0"
+            VerticalAlignment="Top"
+            ItemTemplate="{DynamicResource LanguageDictionaryItemTemplate}"
+            ItemsSource="{Binding Cultures}"
+            SelectedItem="{Binding SelectedPack}" />
+        <StatusBar Height="24" VerticalAlignment="Bottom">
+            <StatusBarItem Height="24" VerticalAlignment="Top">
+                <Run>
+                    <ul:Tr Uid="24" Default="Languages : {0}">
+                        <Binding
+                            FallbackValue="0"
+                            Mode="OneWay"
+                            Path="LanguageCount" />
+                    </ul:Tr>
+                </Run>
+
+
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

@@ -8,11 +8,12 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Localization.Demo</RootNamespace>
     <AssemblyName>Localization.Demo</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -54,7 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Compile Include="ViewModel\RelayCommand.cs" />
+    <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -62,14 +64,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LanguageManager.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="ViewModel\EventRaiser.cs" />
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -96,17 +98,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Localization.Json\Localization.Json.csproj">
-      <Project>{161a23e7-a22c-47c2-a39d-871a357b1e3c}</Project>
-      <Name>Localization.Json</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Localization.XML\Localization.XML.csproj">
-      <Project>{2d97ee5d-b7b8-42ca-aa2b-d780ac95648e}</Project>
-      <Name>Localization.XML</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Localization\Localization.csproj">
+    <ProjectReference Include="..\Localization\Rasyidf.Localization.csproj">
       <Project>{6c0438ef-c94d-4a3e-b14c-92575fecee6c}</Project>
-      <Name>Localization</Name>
+      <Name>Rasyidf.Localization</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -122,15 +116,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Languages\de-DE.xml">
+    <None Include="Languages\jv-Latn-ID.json">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Languages\jv-Latn-ID.json">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Languages\de-DE.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

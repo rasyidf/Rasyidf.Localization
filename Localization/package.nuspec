@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <!--*-->
+    <id>Rasyidf.Localization</id>
+    <!--*-->
+    <version>0.3.0</version>
+    <title>Rasyidf.Localization</title>
+    <!--*-->
+    <authors>Rasyidf</authors>
+    <owners>Rasyidf</owners>
+    <projectUrl>https://github.com/rasyidf/Rasyidf.Localization</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <!--*-->
+    <description>WPF Localization Framework</description>
+    <!--*-->
+    <releaseNotes>Functional Release</releaseNotes>
+    <copyright>Copyright © 2019 Rasyidf</copyright>
+    <tags>Localization, MultiLanguage, WpfLocalization, CSharp, Internationalization, WPF, Globalization, i18n, l12n</tags>
+ 
+  </metadata>
+</package>

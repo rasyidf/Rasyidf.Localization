@@ -4,139 +4,120 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace UFA.Localization
+namespace Rasyidf.Localization
 {
     [ContentProperty("Parameters")]
-	public class T : MarkupExtension
-	{
-		#region Fields
+    public class Tr : MarkupExtension
+    {
+        #region Fields
 
-		private DependencyProperty	_property;
-		private DependencyObject	_target;
-		private object				_default;
-		private string				_uid;
-		
-		private readonly Collection<BindingBase> _parameters = new Collection<BindingBase>();
+        DependencyProperty _property;
+        DependencyObject _target;
 
-		#endregion
+        #endregion Fields
 
-		#region Initialization
+        #region Initialization
 
-		public T() { }
+        public Tr()
+        {
+        }
 
-		public T(object defaultValue)
-		{
-			this._default = defaultValue;
-		}
-		
-		#endregion
+        public Tr(object defaultValue)
+        {
+            Default = defaultValue;
+        }
 
-		#region Properties
+        #endregion Initialization
 
-		public object Default
-		{
-			get { return _default; }
-			set { _default = value; }
-		}
+        #region Properties
 
-		public string Uid
-		{
-			get { return _uid; }
-			set { _uid = value; }
-		}
+        public object Default { get; set; }
 
-		public Collection<BindingBase> Parameters
-		{
-			get { return _parameters; }
-		}
+        public string Uid { get; set; }
 
-		#region UidProperty DProperty
+        public Collection<BindingBase> Parameters { get; } = new Collection<BindingBase>();
 
-		public static string GetUid(DependencyObject obj)
-		{
-			return (string)obj.GetValue(UidProperty);
-		}
+        #region UidProperty DProperty
 
-		public static void SetUid(DependencyObject obj, string value)
-		{
-			obj.SetValue(UidProperty, value);
-		}
+        public static string GetUid(DependencyObject obj)
+        {
+            return (string)obj.GetValue(UidProperty);
+        }
 
-		public static readonly DependencyProperty UidProperty =
-			DependencyProperty.RegisterAttached("Uid", typeof(string), typeof(T), new UIPropertyMetadata(string.Empty));		 
+        public static void SetUid(DependencyObject obj, string value)
+        {
+            obj.SetValue(UidProperty, value);
+        }
 
-		#endregion
+        public static readonly DependencyProperty UidProperty =
+            DependencyProperty.RegisterAttached("Uid", typeof(string), typeof(Tr), new UIPropertyMetadata(string.Empty));
 
-		#endregion
+        #endregion UidProperty DProperty
 
-		#region Overrides
+        #endregion Properties
 
-		public override object ProvideValue(IServiceProvider serviceProvider)
-		{
-			IProvideValueTarget service = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
-			if (service == null)
-			{
-				return this;
-			}
+        #region Overrides
 
-			DependencyProperty property = service.TargetProperty as DependencyProperty;
-			DependencyObject target = service.TargetObject as DependencyObject;
-			if (property == null || target == null)
-			{
-				return this;
-			}
-
-			this._target = target;
-			this._property = property;
-
-			return BindDictionary(serviceProvider);
-		}		
-
-		#endregion
-
-		#region Privates
-
-		private object BindDictionary(IServiceProvider serviceProvider)
-		{
-			string uid = _uid ?? GetUid(_target);
-			string vid = _property.Name;
-
-            Binding binding = new Binding("Dictionary")
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            if (!(serviceProvider.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget service))
             {
-                Source = LanguageContext.Instance,
+                return this;
+            }
+            
+            if (!(service.TargetProperty is DependencyProperty property) || !(service.TargetObject is DependencyObject target))
+            {
+                return this;
+            }
+
+            _target = target;
+            _property = property;
+
+            return BindDictionary(serviceProvider);
+        }
+
+        #endregion Overrides
+
+        #region Privates
+
+        object BindDictionary(IServiceProvider serviceProvider)
+        {
+            var uid = Uid ?? GetUid(_target);
+            var vid = _property.Name;
+
+            var binding = new Binding("Pack")
+            {
+                Source = LocalizationService.Current,
                 Mode = BindingMode.TwoWay
             };
-            LanguageConverter converter = new LanguageConverter(uid, vid, _default);
-			if (_parameters.Count == 0)
-			{
-				binding.Converter = converter;
-				object value = binding.ProvideValue(serviceProvider);
-				return value;
-			}
-			else
-			{
-                MultiBinding multiBinding = new MultiBinding()
-                {
-                    Mode = BindingMode.TwoWay,
-                    Converter = converter
-                };
-                multiBinding.Bindings.Add(binding);
-				if (string.IsNullOrEmpty(uid))
-				{
-					Binding uidBinding = _parameters[0] as Binding;
-					if (uidBinding == null)
-					{
-						throw new ArgumentException("Uid Binding parameter must be the first, and of type Binding");
-					}
-				}
-				foreach (Binding parameter in _parameters)
-				{
-					multiBinding.Bindings.Add(parameter);
-				}
-				object value = multiBinding.ProvideValue(serviceProvider);
-				return value;
-			}
-		}
-		#endregion
-	}
+
+            var converter = new LanguageConverter(uid, vid, Default);
+            if (Parameters.Count == 0)
+            {
+                binding.Converter = converter;
+                return binding.ProvideValue(serviceProvider);
+            }
+
+            var multiBinding = new MultiBinding()
+            {
+                Mode = BindingMode.OneWay,
+                Converter = converter
+            };
+
+            multiBinding.Bindings.Add(binding);
+            if (string.IsNullOrEmpty(uid) && !(Parameters[0] is Binding))
+            {
+                throw new ArgumentException("Uid Binding parameter must be the first, and of type Binding");
+            }
+
+            foreach (var i in Parameters)
+            {
+                var bindingBase = (Binding) i;
+                multiBinding.Bindings.Add(bindingBase);
+            }
+            return multiBinding.ProvideValue(serviceProvider);
+        }
+
+        #endregion Privates
+    }
 }

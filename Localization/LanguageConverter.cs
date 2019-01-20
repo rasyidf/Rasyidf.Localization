@@ -1,120 +1,121 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Windows.Data;
+using System.Windows.Data; 
 
-namespace UFA.Localization
+namespace Rasyidf.Localization
 {
     public class LanguageConverter : IValueConverter, IMultiValueConverter
-	{
-		#region Fields
+    {
+        #region Fields
 
-		private string _uid;
-		private string _vid;
-		private object _defaultValue;
-		private bool _isStaticUid; 
-		
-		#endregion
+        string _uid;
+        readonly string _vid;
+        readonly object _defaultValue;
+        bool _isStaticUid;
 
-		#region Initialization
+        #endregion Fields
 
-		public LanguageConverter(string uid, string vid, object defaultValue)
-		{
-			this._uid			= uid;
-			this._vid			= vid;
-			this._defaultValue	= defaultValue;
-			this._isStaticUid	= true;
-		}
- 
-		#endregion
+        #region Initialization
 
-		#region IValueConverter Members
+        public LanguageConverter(string uid, string vid, object defaultValue)
+        {
+            _uid = uid;
+            _vid = vid;
+            _defaultValue = defaultValue;
+            _isStaticUid = true;
+        }
 
-		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-		{
-			LanguageDictionary dictionary = ResolveDictionary();
-			object translation = dictionary.Translate(_uid, _vid, _defaultValue, targetType);
-			return translation;
-		}		
+        #endregion Initialization
 
-		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-		{
-			return Binding.DoNothing;
-		}
+        #region IValueConverter Members
 
-		#endregion
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var dictionary = ResolveDictionary();
+            var translation = dictionary.Translate(_uid, _vid, _defaultValue, targetType);
+            return translation;
+        }
 
-		#region IMultiValueConverter Members
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Binding.DoNothing;
+        }
 
-		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-		{
-			try
-			{
-				int parametersCount = _isStaticUid ? values.Length - 1 : values.Length - 2;
-				if (string.IsNullOrEmpty(_uid))
-				{
-					if (values[1] == null)
-					{
-						throw new ArgumentNullException("Uid must be provided as the first Binding element, and must not be null");
-					}
-					_isStaticUid = false;
-					_uid = values[1].ToString();
-					--parametersCount;
-				}
-				LanguageDictionary dictionary = ResolveDictionary();
-				object translatedObject = dictionary.Translate(_uid, _vid, _defaultValue, targetType);
-				if (translatedObject != null && parametersCount != 0)
-				{
-					object[] parameters = new object[parametersCount];
-					Array.Copy(values, values.Length - parametersCount, parameters, 0, parameters.Length);
-					try
-					{
-						translatedObject = string.Format(translatedObject.ToString(), parameters);
-					}
-					catch (Exception ex)
-					{
-						#region Trace
-						Debug.WriteLine(string.Format("LanguageConverter failed to format text {0}", translatedObject.ToString()));
-						#endregion
-					}
-				}
-				return translatedObject;
-			}
-			catch (Exception ex)
-			{
-				#region Trace
-				Debug.WriteLine(string.Format("LanguageConverter failed to convert text: {0}", ex.Message));
-				#endregion
-			}
-			return null;
-		}
+        #endregion IValueConverter Members
 
-		public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-		{
-			return new object[0];
-		}		
+        #region IMultiValueConverter Members
 
-		#endregion
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            try
+            {
+                var parametersCount = _isStaticUid ? values.Length - 1 : values.Length - 2;
+                if (string.IsNullOrEmpty(_uid))
+                {
+                    if (values[1] == null)
+                    {
+                        throw new ArgumentNullException(nameof(values));
+                    }
+                    _isStaticUid = false;
+                    _uid = values[1].ToString();
+                    --parametersCount;
+                }
+                var dictionary = ResolveDictionary();
+                var translatedObject = dictionary.Translate(_uid, _vid, _defaultValue, targetType);
 
-		#region Privates
+                if (translatedObject == null || parametersCount == 0) return translatedObject;
 
-		private bool ShouldTranslateText
-		{
-			get { return string.IsNullOrEmpty(_vid); }
-		}
+                var parameters = new object[parametersCount];
+                Array.Copy(values, values.Length - parametersCount, parameters, 0, parameters.Length);
 
-		private static LanguageDictionary ResolveDictionary()
-		{
-			LanguageDictionary dictionary = LanguageDictionary.GetDictionary(
-				LanguageContext.Instance.Culture);
-			if (dictionary == null)
-			{
-				throw new InvalidOperationException(string.Format("Dictionary for language {0} was not found",
-					LanguageContext.Instance.Culture));
-			}
-			return dictionary;
-		}
+                try
+                {
+                    translatedObject = string.Format(translatedObject.ToString(), parameters);
+                }
+                catch (Exception)
+                {
+                    #region Trace
 
-		#endregion
-	}
+                    Debug.WriteLine($"LanguageConverter failed to format text {translatedObject.ToString()}");
+
+                    #endregion Trace
+                }
+                return translatedObject;
+            }
+            catch (Exception ex)
+            {
+                #region Trace
+
+                Debug.WriteLine($"LanguageConverter failed to convert text: {ex.Message}");
+
+                #endregion Trace
+            }
+            return null;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            return new object[0];
+        }
+
+        #endregion IMultiValueConverter Members
+
+        #region Privates
+
+        static BaseLanguagePack ResolveDictionary()
+        {
+            var dictionary = BaseLanguagePack.GetResources(LocalizationService.Current.Culture);
+
+            if (dictionary == null)
+            {
+                throw new InvalidOperationException(
+                    $"Pack for language {LocalizationService.Current.Culture} was not found");
+            }
+
+            return dictionary;
+        }
+
+        #endregion Privates
+    }
 }

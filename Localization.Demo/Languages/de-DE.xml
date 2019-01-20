@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Dictionary EnglishName="German" CultureName="de-DE" Culture="de-DE">
+<Pack EnglishName="German" CultureName="Deutsch" Culture="de-DE">
   <Value Id="0" Title="Demo Window" />
   <Value Id="11" Header="Datei" />
   <Value Id="110" Header="Beenden" />
@@ -16,4 +16,4 @@
   <Value Id="21" Text="Das ist Dynamisch Sprachen Demo"/>
   <Value Id="22" Text="Verfügbare Sprachen auswählen:"/>
   <Value Id="24" Text="Sprachen: {0}"/> 
-</Dictionary>
+</Pack>

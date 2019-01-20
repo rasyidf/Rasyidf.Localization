@@ -1,11 +1,11 @@
 ﻿{
 "EnglishName": "Javanese",
-"CultureName": "jv-Latn-ID",
+"CultureName": "Basa Jawa",
 "Culture": "jv-Latn-ID",
 "Data": [
 {
 "Id": 0,
-"Title": "Conto Aplikasi"
+"Title": "Contoh Aplikasi"
 },
 {
 "Id": 11,
@@ -13,15 +13,15 @@
 },
 {
 "Id": 110,
-"Header": "medal"
+"Header": "Medal"
 },
 {
 "Id": 12,
-"Header": "cundhuk"
+"Header": "Cundhuk"
 },
 {
 "Id": 120,
-"Header": "potong"
+"Header": "Potong"
 },
 {
 "Id": 121,
