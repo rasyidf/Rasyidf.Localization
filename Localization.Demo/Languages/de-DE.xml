@@ -15,5 +15,7 @@
   <Value Id="150" Header="Über" />
   <Value Id="21" Text="Das ist Dynamisch Sprachen Demo"/>
   <Value Id="22" Text="Verfügbare Sprachen auswählen:"/>
-  <Value Id="24" Text="Sprachen: {0}"/> 
+  <Value Id="24" Text="Sprachen"/>
+  <Value Id="510" Content="Hallo" />
+  <Value Id="511" Header="Hallo Welt" Text="Das ist nachricht" />
 </Pack>

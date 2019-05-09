@@ -40,6 +40,18 @@ namespace Rasyidf.Localization
             return (TValue)Translate(uid, vid, null, typeof(TValue));
         }
 
+        public TValue Translate<TValue>(string uid, string vid, TValue defaultValue)
+        {
+            try
+            {
+                return (TValue)Translate(uid, vid, defaultValue, typeof(TValue));
+            }
+            catch (Exception)
+            {
+                return defaultValue; 
+            }          
+        }
+
         public object Translate(string uid, string vid, object defaultValue, Type type)
         {
             return OnTranslate(uid, vid, defaultValue, type);

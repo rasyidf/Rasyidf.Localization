@@ -10,10 +10,12 @@
   <Value Id="123" Header="Options" />
   <Value Id="13" Header="View" />
   <Value Id="130" Header="Status bar" />
-  <Value Id="14" Header="BaseLanguages" />
+  <Value Id="14" Header="Languages" />
   <Value Id="15" Header="Help" />
   <Value Id="150" Header="About" />
   <Value Id="21" Text="This is Dynamic Language Demo with UFA.Lang" />
   <Value Id="22" Text="Select Available Languages:" />
-  <Value Id="24" Text="BaseLanguages: {0}" />
+  <Value Id="24" Text="Languages" />
+  <Value Id="510" Content="Hello" />
+  <Value Id="511" Header="Hello Wold" Text="This Is message String" />
 </Pack>

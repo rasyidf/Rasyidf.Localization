@@ -1,6 +1,9 @@
 ﻿using Rasyidf.Localization;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Localization.Demo
 {
@@ -13,23 +16,34 @@ namespace Localization.Demo
             var cultures = a.Keys;
             foreach (var culture in cultures)
             {
-                Cultures.Add(BaseLanguagePack.GetResources(culture));
+                var pack = BaseLanguagePack.GetResources(culture);
+                Cultures.Add(pack);
+                CultureMenus.Add(new MenuItem() { Header= $"{pack.EnglishName} ({pack.CultureName})", Tag = pack });
             }
         }
 
         private RelayCommand<BaseLanguagePack> _changeLanguageCommand;
-        public RelayCommand<BaseLanguagePack> ChangeLanguageCommand => _changeLanguageCommand
-                       ?? (_changeLanguageCommand = new RelayCommand<BaseLanguagePack>(ChangeLanguage));
+        public RelayCommand<BaseLanguagePack> ChangeLanguageCommand => _changeLanguageCommand ?? (_changeLanguageCommand = new RelayCommand<BaseLanguagePack>(ChangeLanguage));
+        private RelayCommand _showMessageCommand;
+        public RelayCommand ShowMessageCommand => _showMessageCommand ?? (_showMessageCommand = new RelayCommand(ShowMessage));
+
+        private void ShowMessage(object obj)
+        {
+            MessageBox.Show(LocalizationService.GetString("511", "Text", "Message"),LocalizationService.GetString("511", "Header","Header"));
+        }
 
         private void ChangeLanguage(BaseLanguagePack value)
         {
-            LocalizationService.Current.ChangeLanguage(value);
-
-            OnPropertyChanged(nameof(SelectedPack));
+            if (value != null)
+            {
+                LocalizationService.Current.ChangeLanguage(value);
+                OnPropertyChanged(nameof(SelectedPack));
+            }
         }
 
         private ObservableCollection<BaseLanguagePack> _cultures = new ObservableCollection<BaseLanguagePack>();
         private BaseLanguagePack _selectedPack;
+        private ObservableCollection<MenuItem> _cultureMenus = new ObservableCollection<MenuItem>();
 
         public ObservableCollection<BaseLanguagePack> Cultures
         {
@@ -39,7 +53,14 @@ namespace Localization.Demo
                 OnPropertyChanged(nameof(Cultures));
             }
         }
-
+          public ObservableCollection<MenuItem> CultureMenus
+        {
+            get => _cultureMenus; set
+            {
+                _cultureMenus = value;
+                OnPropertyChanged(nameof(CultureMenus));
+            }
+        }
         public int LanguageCount => Cultures.Count;
 
         public BaseLanguagePack SelectedPack

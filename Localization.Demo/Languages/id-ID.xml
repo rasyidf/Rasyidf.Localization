@@ -15,5 +15,7 @@
   <Value Id="150" Header="Tentang" />
   <Value Id="21" Text="Ini adalah demonstrasi Bahasa Dinamis dengan UFA.Lang" />
   <Value Id="22" Text="Pilih Bahasa yang tersedia:" />
-  <Value Id="24" Text="Bahasa: {0}" />
+  <Value Id="24" Text="Bahasa" />
+  <Value Id="510" Content="Halo" />
+  <Value Id="511" Header="Halo dunia" Text="Ini adalah pesan" />
 </Pack>

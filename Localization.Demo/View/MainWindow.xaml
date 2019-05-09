@@ -41,14 +41,12 @@
                 <MenuItem Header="{ul:Tr Status bar, Uid=130}" IsCheckable="True" />
             </MenuItem>
             <MenuItem
-                Header="{ul:Tr Language,
-                               Uid=14}"
-                ItemTemplate="{DynamicResource LanguageDictionaryItemTemplate}"
-                ItemsSource="{Binding Cultures, Mode=OneWay}">
+                Header="{ul:Tr Language, Uid=14}" 
+                ItemsSource="{Binding CultureMenus, Mode=OneWay}">
                 <MenuItem.ItemContainerStyle>
                     <Style TargetType="MenuItem">
                         <Setter Property="Command" Value="{Binding ChangeLanguageCommand}" />
-                        <Setter Property="CommandParameter" Value="{Binding}" />
+                        <Setter Property="CommandParameter" Value="{Binding Tag, RelativeSource={RelativeSource Self}}" />
                     </Style>
                 </MenuItem.ItemContainerStyle>
             </MenuItem>
@@ -79,18 +77,17 @@
             ItemsSource="{Binding Cultures}"
             SelectedItem="{Binding SelectedPack}" />
         <StatusBar Height="24" VerticalAlignment="Bottom">
+            <StatusBarItem Height="24" Width="100" VerticalAlignment="Top" >
+                <TextBlock Text="{ul:Tr 'Languages',
+                         Uid=24}"/>
+            </StatusBarItem>
             <StatusBarItem Height="24" VerticalAlignment="Top">
-                <Run>
-                    <ul:Tr Uid="24" Default="Languages : {0}">
-                        <Binding
+                <Binding
                             FallbackValue="0"
                             Mode="OneWay"
                             Path="LanguageCount" />
-                    </ul:Tr>
-                </Run>
-
-
             </StatusBarItem>
         </StatusBar>
+        <Button Content="{ul:Tr Hallo, Uid=510}" Margin="73,0,0,29" Command="{Binding ShowMessageCommand}" VerticalAlignment="Bottom" Height="40" HorizontalAlignment="Left" Width="164"/>
     </Grid>
 </Window>

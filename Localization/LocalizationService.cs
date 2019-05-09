@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rasyidf.Localization.Providers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -6,7 +7,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Rasyidf.Localization.Providers;
 
 namespace Rasyidf.Localization
 {
@@ -78,7 +78,7 @@ namespace Rasyidf.Localization
             {
                 ScanLanguagesInFolder(path);
             }
-            Current.Culture = CultureInfo.GetCultureInfo(language); 
+            Current.Culture = CultureInfo.GetCultureInfo(language);
             OnPropertyChanged(nameof(BaseLanguage));
         }
 
@@ -132,7 +132,7 @@ namespace Rasyidf.Localization
 
         public static IEnumerable<FileInfo> GetFilesByExtensions(DirectoryInfo directory, params string[] extensions)
         {
-            var allowedExtensions = new HashSet<string>(extensions, StringComparer.OrdinalIgnoreCase); 
+            var allowedExtensions = new HashSet<string>(extensions, StringComparer.OrdinalIgnoreCase);
             return directory.EnumerateFiles().Where(f => allowedExtensions.Contains(f.Extension));
         }
 
@@ -142,12 +142,17 @@ namespace Rasyidf.Localization
             Thread.CurrentThread.CurrentUICulture = _cultureInfo;
             if (!value.IsLoaded)
             {
-                value.Load(); 
-            } 
+                value.Load();
+            }
             Pack = value;
             OnPropertyChanged(nameof(Culture));
         }
+
+        public static string GetString(string uid, string vid, string @default = "")
+        {
+            return Current.Pack.Translate(uid, vid, @default);
+        }
     }
 
-     
+
 }

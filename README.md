@@ -4,13 +4,14 @@ Fast and simple localization framework.
 
 ## Getting Started
 
+### Installation
 To use this framework. add nuget pack package:
 
 ```powershell
 Install-Package Rasyidf.Localization
 ```
 
-then register the the services on App.cs
+Then register the the services on App.cs
 
 ```csharp
     public partial class App : Application
@@ -23,54 +24,71 @@ then register the the services on App.cs
         ...
 ```
 
-then you can implement Binding in any XAML like this:
+### Usage
 
-```xml
+All set, now you can implement Binding in any XAML like this:
+
+```xml 
 <!-- Bind like this-->
 <MenuItem Header="{ul:Tr File, Uid=11}"/>
+
 <!--Or this -->
-<TextBlock Text="{ul:Tr Default='Default Hello World', Uid=hello}"/>
-<TextBlock Text="{ul:Tr Default, Uid=hello}"/>
+<TextBlock Text="{ul:Tr Default='Default Hello World', Uid=11}"/>
+<TextBlock Text="{ul:Tr FallBackText, Uid=12}"/>
 <!-- Or this, with Format String -->
-<Run>
-<ul:Tr Uid="24" Default="Language : {0}, Count : {1} ">
-    <Binding FallbackValue="en-US" Mode="OneWay"
-        Path="CurrentLanguage" />
-    <Binding FallbackValue="0" Mode="OneWay"
-        Path="LanguageCount" />
-</ul:Tr>
-</Run>
+<TextBlock>
+	<Run>
+		<ul:Tr Uid="24" Default="Language : {0}, Count : {1} ">
+			<Binding FallbackValue="en-US" Mode="OneWay"
+				Path="CurrentLanguage" />
+			<Binding FallbackValue="0" Mode="OneWay"
+				Path="LanguageCount" />
+		</ul:Tr>
+	</Run>
+</TextBlock>
+
 ```
 
-Then create Language Pack like this into the language folder:
+or you can call in code behind
+
+```csharp
+	MessageBox.Show(LocalizationService.GetString("511", "Text", "Default Message"),LocalizationService.GetString("511", "Header","Default Title"));
+```
+
+### Language Packs
+
+The Language Pack can be XML or JSON like below, put in the language folder:
 
 In XML
 ```xml
 <Pack EnglishName="English" CultureName="English" Culture="en-US">
+  <Value Id="0" Header="Window Title" />
   <Value Id="11" Header="File" />
   <Value Id="110" Header="Exit" /> 
 </Pack>
 ```
-In Json
+
+Or In Json
 ```json
 {
-    "EnglishName": "Javanese", "CultureName": "Basa Jawa",
-    "Culture": "jv-Latn-ID",
+    "EnglishName": "Indonesian", "CultureName": "Bahasa Indonesia",
+    "Culture": "id-ID",
     "Data": [ 
-    { "Id": 0, "Title": "Contoh" }, 
-    { "Id": 11, "Header": "Berkas" }
+    { "Id": 0, "Header": "Judul Jendela" }, 
+    { "Id": 11, "Header": "Berkas" }, 
+    { "Id": 110, "Header": "Keluar" }
     ]
 }
 ```
 
-And Done :)
+All Done :)
 
 
 ## Authors
 
 * **Rasyid, Muhammad Fahmi** - *Initial work* - [Rasyidf](https://github.com/rasyidf)
 
-See also the list of [contributors](https://github.com/rasyidf/UFA.Localization/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/rasyidf/rasyidf.Localization/contributors) who participated in this project.
 
 ## License
 
@@ -78,4 +96,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-See list of third party components for [aditional acknowledgements](https://github.com/rasyidf/UFA.Localization/wiki/List-of-Contributors)
+See list of third party components for [aditional acknowledgements](https://github.com/rasyidf/rasyidf.Localization/wiki/List-of-Contributors)
