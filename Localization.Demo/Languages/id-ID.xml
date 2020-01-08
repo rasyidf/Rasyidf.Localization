@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Pack EnglishName="Indonesian" CultureName="Bahasa Indonesia" Culture="id-ID">
+<Pack version="0.4" EnglishName="Indonesian" CultureName="Bahasa Indonesia" Culture="id-ID">
   <Value Id="0" Title="Jendela Demonstrasi" />
   <Value Id="11" Header="Berkas" />
   <Value Id="110" Header="Keluar" />

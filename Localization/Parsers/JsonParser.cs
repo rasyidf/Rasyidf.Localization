@@ -17,8 +17,7 @@ namespace Rasyidf.Localization.Parsers
 
         public static T FromJson<T>(this string json)
         {
-            if (string.IsNullOrEmpty(json)) return (T)ParseValue(typeof(T), "");
-            //Remove all whitespace not within strings to make parsing simpler
+            if (string.IsNullOrEmpty(json)) return (T)ParseValue(typeof(T), ""); 
             stringBuilder.Clear();
             for (var i = 0; i < json.Length; i++)
             {
@@ -50,7 +49,7 @@ namespace Rasyidf.Localization.Parsers
                         if (appendEscapeCharacter)
                             stringBuilder.Append(json[i]);
                         stringBuilder.Append(json[i + 1]);
-                        i++;//Skip next character as it is escaped
+                        i++; 
                         break;
                     }
                     case '\"':

@@ -61,7 +61,7 @@ namespace Rasyidf.Localization
                     _uid = values[1].ToString();
                     --parametersCount;
                 }
-                var dictionary = ResolveDictionary();
+                LanguageItem dictionary = ResolveDictionary();
                 var translatedObject = dictionary.Translate(_uid, _vid, _defaultValue, targetType);
 
                 if (translatedObject == null || parametersCount == 0) return translatedObject;
@@ -103,14 +103,14 @@ namespace Rasyidf.Localization
 
         #region Privates
 
-        static LanguagePackBase ResolveDictionary()
+        static LanguageItem ResolveDictionary()
         {
-            var dictionary = LanguagePackBase.GetResources(LocalizationService.Current.Culture);
+            var dictionary = LanguageItem.GetResources(LanguageService.Current.Culture);
 
-            if (dictionary == null)
+            if (dictionary is null)
             {
                 throw new InvalidOperationException(
-                    $"Pack for language {LocalizationService.Current.Culture} was not found");
+                    $"Pack for language {LanguageService.Current.Culture} was not found");
             }
 
             return dictionary;

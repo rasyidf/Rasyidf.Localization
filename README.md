@@ -83,6 +83,10 @@ Or In Json
 
 All Done :)
 
+## What is new
+
+0.5.0
+* Translation string extension use `"UID, VID".Translate()` to get localized string.
 
 ## Authors
 

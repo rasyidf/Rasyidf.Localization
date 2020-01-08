@@ -71,11 +71,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LanguagePackBase.cs" />
+    <Compile Include="LanguageItem.cs" />
+    <Compile Include="Providers\StreamBase.cs" />
     <Compile Include="Parsers\JsonParser.cs" />
     <Compile Include="Providers\JsonStream.cs" />
     <Compile Include="LanguageConverter.cs" />
-    <Compile Include="LocalizationService.cs" />
+    <Compile Include="LanguageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -91,7 +92,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="License\LICENSE.md" />
     <None Include="package.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

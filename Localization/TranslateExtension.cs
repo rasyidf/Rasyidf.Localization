@@ -85,9 +85,9 @@ namespace Rasyidf.Localization
             var uid = Uid ?? GetUid(_target);
             var vid = _property.Name;
 
-            var binding = new Binding("Pack")
+            var binding = new Binding("LanguagePack")
             {
-                Source = LocalizationService.Current,
+                Source = LanguageService.Current,
                 Mode = BindingMode.TwoWay
             };
 

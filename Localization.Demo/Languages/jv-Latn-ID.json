@@ -1,4 +1,6 @@
 ﻿{
+  "Version" : "0.4",
+  "Type" : "Single",
   "EnglishName": "Javanese",
   "CultureName": "Basa Jawa",
   "Culture": "jv-Latn-ID",

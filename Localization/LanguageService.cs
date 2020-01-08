@@ -10,12 +10,13 @@ using System.Threading;
 
 namespace Rasyidf.Localization
 {
-    public class LocalizationService : INotifyPropertyChanged
+    public class LanguageService : INotifyPropertyChanged
     {
+        
         #region Fields
 
         CultureInfo _cultureInfo;
-        LanguagePackBase _pack;
+        LanguageItem _pack;
 
         #endregion Fields
 
@@ -36,25 +37,20 @@ namespace Rasyidf.Localization
                     return;
                 }
 
-                if (_cultureInfo != null)
-                {
-                    var currentDictionary = LanguagePackBase.GetResources(_cultureInfo);
-                    currentDictionary.Unload();
-                }
+               
                 _cultureInfo = value;
 
                 Thread.CurrentThread.CurrentUICulture = _cultureInfo;
 
-                var newDictionary = LanguagePackBase.GetResources(_cultureInfo);
-                newDictionary.Load();
+                var newDictionary = LanguageItem.GetResources(_cultureInfo);
 
-                Pack = newDictionary;
+                LanguagePack = newDictionary;
                 OnPropertyChanged(nameof(Culture));
             }
         }
 
-        public static Dictionary<CultureInfo, LanguagePackBase> RegisteredPacks { get; } = new Dictionary<CultureInfo, LanguagePackBase>();
-        public LanguagePackBase Pack
+        public static Dictionary<CultureInfo, LanguageItem> RegisteredPacks { get; } = new Dictionary<CultureInfo, LanguageItem>();
+        public LanguageItem LanguagePack
         {
             get => _pack;
             set
@@ -62,27 +58,31 @@ namespace Rasyidf.Localization
                 if (value == null || value == _pack) return;
 
                 _pack = value;
-                OnPropertyChanged(nameof(Pack));
+                OnPropertyChanged(nameof(LanguagePack));
             }
         }
 
         #endregion Properties
 
 
-        public static LocalizationService Current { get; } = new LocalizationService();
+        public static LanguageService Current { get; } = new LanguageService();
 
-        public void Register(string path, string language)
+        /// <summary>
+        /// Initialize Language Service
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="default"></param>
+        public void Initialize(string path = "Languages", string @default="en-us")
         {
+
             if (path != null)
             {
                 ScanLanguagesInFolder(path);
             }
-            Current.Culture = CultureInfo.GetCultureInfo(language);
-            OnPropertyChanged(nameof(BaseLanguage));
-        }
-
-        public LanguagePackBase BaseLanguage { get; set; }
-
+            Current.Culture = CultureInfo.GetCultureInfo(@default);
+            OnPropertyChanged(nameof(LanguagePack));
+        } 
+         
         private void OnPropertyChanged(string property)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
@@ -103,30 +103,30 @@ namespace Rasyidf.Localization
             var files = GetFilesByExtensions(di, ".xml", ".json").ToArray();
 
             foreach (var t in files)
-            {
-                var g = Path.GetFileNameWithoutExtension(t.Name);
+            { 
 
                 var filepath = path + @"\" + t.Name;
 
-                LanguagePackBase baseLanguagePack;
+                StreamBase LanguagePackStream;
 
                 switch (t.Extension)
                 {
                     case ".xml":
-                        baseLanguagePack = new XmlStream(filepath);
+                        LanguagePackStream = new XmlStream(filepath);
                         break;
 
                     case ".json":
-                        baseLanguagePack = new JsonStream(filepath);
+                        LanguagePackStream = new JsonStream(filepath);
                         break;
                     default:
-                        baseLanguagePack = LanguagePackBase.Null;
+                        LanguagePackStream = new NullStream();
                         break;
                 }
-                LanguagePackBase.RegisterDictionary(CultureInfo.GetCultureInfo(g), baseLanguagePack);
-                // PreLoad BaseLanguage to Memory.
-                Current.Culture = CultureInfo.GetCultureInfo(g);
+
+                LanguagePackStream.Load(); 
+                StreamBase.RegisterPacks(LanguagePackStream); 
             }
+             
         }
 
         public static IEnumerable<FileInfo> GetFilesByExtensions(DirectoryInfo directory, params string[] extensions)
@@ -135,23 +135,29 @@ namespace Rasyidf.Localization
             return directory.EnumerateFiles().Where(f => allowedExtensions.Contains(f.Extension));
         }
 
-        public void ChangeLanguage(LanguagePackBase value)
+        public void ChangeLanguage(LanguageItem value)
         {
             _cultureInfo = value.Culture;
             Thread.CurrentThread.CurrentUICulture = _cultureInfo;
-            if (!value.IsLoaded)
-            {
-                value.Load();
-            }
-            Pack = value;
+            LanguagePack = value;
             OnPropertyChanged(nameof(Culture));
         }
          
         public static string GetString(string uid, string valueid, string @default = "")
         {
-            return Current.Pack.Translate(uid, valueid, @default);
+            return Current.LanguagePack.Translate(uid, valueid, @default);
         }
+
+
     }
 
+    public static class StringExtension
+    {
+        public static string Translate(this string self, string @default = "", char separator =',')
+        {
+            var val = self.Split(separator);
+            return LanguageService.GetString(val[0], val[1], @default);
+        }
+    }
 
 }

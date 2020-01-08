@@ -6,33 +6,18 @@ using System.Globalization;
 
 namespace Rasyidf.Localization
 {
-    public abstract class LanguagePackBase
+    public class LanguageItem
     {
-        #region Fields
-
-        public static readonly LanguagePackBase Null = new NullStream();
-
-        #endregion Fields
-
-        #region Properties
+        public static LanguageItem Default = new LanguageItem()
+        {
+            CultureName = CultureInfo.InstalledUICulture.NativeName,
+            EnglishName = CultureInfo.InstalledUICulture.EnglishName,
+            CultureId = CultureInfo.InstalledUICulture.Name
+        };
 
         public CultureInfo Culture => CultureInfo.GetCultureInfo(CultureId);
-         
-        #endregion Properties
 
         #region Public Methods
-
-        public void Load()
-        {
-            OnLoad();
-            IsLoaded = true;
-        }
-
-        public void Unload()
-        {
-            OnUnload();
-            IsLoaded = false;
-        }
 
         public TValue Translate<TValue>(string uid, string vid)
         {
@@ -47,67 +32,41 @@ namespace Rasyidf.Localization
             }
             catch (Exception)
             {
-                return defaultValue; 
-            }          
-        }
-
-        public object Translate(string uid, string vid, object defaultValue, Type type)
-        {
-            return OnTranslate(uid, vid, defaultValue, type);
-        }
-
-        public static void RegisterDictionary(CultureInfo cultureInfo, LanguagePackBase dictionary)
-        {
-            if (LocalizationService.RegisteredPacks.ContainsKey(cultureInfo))
-            {
-                return;
+                return defaultValue;
             }
-            LocalizationService.RegisteredPacks.Add(cultureInfo, dictionary);
         }
 
-        public static void UnregisterDictionary(CultureInfo cultureInfo)
+        public object Translate(string uid, string valueId, object defaultValue, Type type)
         {
-            if (!LocalizationService.RegisteredPacks.ContainsKey(cultureInfo))
-            {
-                return;
-            }
-            LocalizationService.RegisteredPacks.Remove(cultureInfo);
+            return OnTranslate(uid, valueId, defaultValue, type);
         }
 
-        public static LanguagePackBase GetResources(CultureInfo cultureInfo)
+        public static LanguageItem GetResources(CultureInfo cultureInfo)
         {
             if (cultureInfo is null)
             {
                 throw new ArgumentNullException(nameof(cultureInfo));
             }
 
-            if (!LocalizationService.RegisteredPacks.ContainsKey(cultureInfo)) return Null;
+            if (!LanguageService.RegisteredPacks.ContainsKey(cultureInfo)) return Default;
 
-            LanguagePackBase dictionary = LocalizationService.RegisteredPacks[cultureInfo];
+            LanguageItem dictionary = LanguageService.RegisteredPacks[cultureInfo];
             return dictionary;
         }
 
         #endregion Public Methods
-
-        #region Overrideables
-
+         
+        public string Version { get; set; }
         public string CultureId { get; set; }
         public string CultureName { get; set; }
         public string EnglishName { get; set; }
 
-        public bool IsLoaded { get; set; }
 
         internal Dictionary<string, Dictionary<string, string>> Data =
             new Dictionary<string, Dictionary<string, string>>();
 
-        protected abstract void OnLoad();
-
-        protected abstract void OnUnload();
-
         private object OnTranslate(string uid, string vid, object defaultValue, Type type)
         {
-
-
             if (string.IsNullOrEmpty(uid))
             {
                 #region Trace
@@ -138,6 +97,7 @@ namespace Rasyidf.Localization
 
                 return defaultValue;
             }
+
             Dictionary<string, string> innerData = Data[uid];
 
             if (!innerData.ContainsKey(vid))
@@ -157,9 +117,8 @@ namespace Rasyidf.Localization
                     return textValue;
 
 
-                TypeConverter typeConverter = TypeDescriptor.GetConverter(type);
-                object translation = typeConverter.ConvertFromString(textValue);
-                return translation;
+                return TypeDescriptor.GetConverter(type)
+                                     .ConvertFromString(textValue);
 
             }
             catch (Exception ex)
@@ -170,28 +129,8 @@ namespace Rasyidf.Localization
 
                 #endregion Trace
 
-                return null;
+                return defaultValue;
             }
         }
-        #endregion Overrideables
-
-        #region Null Pack
-
-        public sealed class NullStream : LanguagePackBase
-        {
-            protected override void OnLoad()
-            {
-                CultureName = CultureInfo.InstalledUICulture.NativeName;
-                EnglishName = CultureInfo.InstalledUICulture.EnglishName;
-                CultureId = CultureInfo.InstalledUICulture.Name;
-            }
-
-            protected override void OnUnload()
-            {
-            }
-
-        }
-
-        #endregion Null Pack
     }
-}
+} 

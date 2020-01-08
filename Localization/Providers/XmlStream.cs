@@ -5,11 +5,8 @@ using System.Xml;
 
 namespace Rasyidf.Localization.Providers
 {
-    public class XmlStream : LanguagePackBase
-    {
-
-        public string Path { get; set; }
-        
+    public class XmlStream : StreamBase
+    { 
         public XmlStream(string path)
         {
             if (File.Exists(path))
@@ -32,11 +29,13 @@ namespace Rasyidf.Localization.Providers
                 throw new XmlException("Invalid root element. Must be Pack");
             }
 
-
-            EnglishName = docElement.Attributes["EnglishName"]?.Value; 
-            CultureName = docElement.Attributes["CultureName"]?.Value; 
-            CultureId   = docElement.Attributes["Culture"]?.Value;
-
+            var tmp = new LanguageItem()
+            {
+                Version = docElement.Attributes["Version"]?.Value,
+                EnglishName = docElement.Attributes["EnglishName"]?.Value,
+                CultureName = docElement.Attributes["CultureName"]?.Value,
+                CultureId = docElement.Attributes["Culture"]?.Value,
+            };
 
             foreach (XmlNode node in docElement.ChildNodes)
             {
@@ -50,21 +49,23 @@ namespace Rasyidf.Localization.Providers
                 {
                     if (attribute.Name == "Id")
                     {
-                        if (Data.ContainsKey(attribute.Value)) continue;
+                        if (tmp.Data.ContainsKey(attribute.Value)) continue;
 
-                        Data[attribute.Value] = innerData;
+                        tmp.Data[attribute.Value] = innerData;
                     }
                     else
                     {
                         innerData[attribute.Name] = attribute.Value;
                     }
                 }
+
             }
+            Packs.Add(tmp);
         }
 
         protected override void OnUnload()
         {
-            Data.Clear();
+             
         }
 
 
