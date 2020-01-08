@@ -5,7 +5,7 @@ using System.Xml;
 
 namespace Rasyidf.Localization.Providers
 {
-    public class XmlStream : BaseLanguagePack
+    public class XmlStream : LanguagePackBase
     {
 
         public string Path { get; set; }

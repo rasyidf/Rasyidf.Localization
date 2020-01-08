@@ -15,7 +15,7 @@ namespace Rasyidf.Localization
         #region Fields
 
         CultureInfo _cultureInfo;
-        BaseLanguagePack _pack;
+        LanguagePackBase _pack;
 
         #endregion Fields
 
@@ -38,14 +38,14 @@ namespace Rasyidf.Localization
 
                 if (_cultureInfo != null)
                 {
-                    var currentDictionary = BaseLanguagePack.GetResources(_cultureInfo);
+                    var currentDictionary = LanguagePackBase.GetResources(_cultureInfo);
                     currentDictionary.Unload();
                 }
                 _cultureInfo = value;
 
                 Thread.CurrentThread.CurrentUICulture = _cultureInfo;
 
-                var newDictionary = BaseLanguagePack.GetResources(_cultureInfo);
+                var newDictionary = LanguagePackBase.GetResources(_cultureInfo);
                 newDictionary.Load();
 
                 Pack = newDictionary;
@@ -53,9 +53,8 @@ namespace Rasyidf.Localization
             }
         }
 
-        public static Dictionary<CultureInfo, BaseLanguagePack> RegisteredPacks { get; } = new Dictionary<CultureInfo, BaseLanguagePack>();
-
-        public BaseLanguagePack Pack
+        public static Dictionary<CultureInfo, LanguagePackBase> RegisteredPacks { get; } = new Dictionary<CultureInfo, LanguagePackBase>();
+        public LanguagePackBase Pack
         {
             get => _pack;
             set
@@ -82,7 +81,7 @@ namespace Rasyidf.Localization
             OnPropertyChanged(nameof(BaseLanguage));
         }
 
-        public BaseLanguagePack BaseLanguage { get; set; }
+        public LanguagePackBase BaseLanguage { get; set; }
 
         private void OnPropertyChanged(string property)
         {
@@ -109,7 +108,7 @@ namespace Rasyidf.Localization
 
                 var filepath = path + @"\" + t.Name;
 
-                BaseLanguagePack baseLanguagePack;
+                LanguagePackBase baseLanguagePack;
 
                 switch (t.Extension)
                 {
@@ -121,10 +120,10 @@ namespace Rasyidf.Localization
                         baseLanguagePack = new JsonStream(filepath);
                         break;
                     default:
-                        baseLanguagePack = BaseLanguagePack.Null;
+                        baseLanguagePack = LanguagePackBase.Null;
                         break;
                 }
-                BaseLanguagePack.RegisterDictionary(CultureInfo.GetCultureInfo(g), baseLanguagePack);
+                LanguagePackBase.RegisterDictionary(CultureInfo.GetCultureInfo(g), baseLanguagePack);
                 // PreLoad BaseLanguage to Memory.
                 Current.Culture = CultureInfo.GetCultureInfo(g);
             }
@@ -136,7 +135,7 @@ namespace Rasyidf.Localization
             return directory.EnumerateFiles().Where(f => allowedExtensions.Contains(f.Extension));
         }
 
-        public void ChangeLanguage(BaseLanguagePack value)
+        public void ChangeLanguage(LanguagePackBase value)
         {
             _cultureInfo = value.Culture;
             Thread.CurrentThread.CurrentUICulture = _cultureInfo;
@@ -147,10 +146,10 @@ namespace Rasyidf.Localization
             Pack = value;
             OnPropertyChanged(nameof(Culture));
         }
-
-        public static string GetString(string uid, string vid, string @default = "")
+         
+        public static string GetString(string uid, string valueid, string @default = "")
         {
-            return Current.Pack.Translate(uid, vid, @default);
+            return Current.Pack.Translate(uid, valueid, @default);
         }
     }
 

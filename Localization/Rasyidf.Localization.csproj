@@ -71,7 +71,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseLanguagePack.cs" />
+    <Compile Include="LanguagePackBase.cs" />
     <Compile Include="Parsers\JsonParser.cs" />
     <Compile Include="Providers\JsonStream.cs" />
     <Compile Include="LanguageConverter.cs" />

@@ -5,7 +5,7 @@ Fast and simple localization framework.
 ## Getting Started
 
 ### Installation
-To use this framework. add nuget pack package:
+To use this framework. add nuget package:
 
 ```powershell
 Install-Package Rasyidf.Localization
@@ -28,7 +28,7 @@ Then register the the services on App.cs
 
 All set, now you can implement Binding in any XAML like this:
 
-```xml 
+``` xml 
 <!-- Bind like this-->
 <MenuItem Header="{ul:Tr File, Uid=11}"/>
 

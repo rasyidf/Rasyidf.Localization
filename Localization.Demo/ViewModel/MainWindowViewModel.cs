@@ -16,14 +16,14 @@ namespace Localization.Demo
             var cultures = a.Keys;
             foreach (var culture in cultures)
             {
-                var pack = BaseLanguagePack.GetResources(culture);
+                var pack = LanguagePackBase.GetResources(culture);
                 Cultures.Add(pack);
                 CultureMenus.Add(new MenuItem() { Header= $"{pack.EnglishName} ({pack.CultureName})", Tag = pack });
             }
         }
 
-        private RelayCommand<BaseLanguagePack> _changeLanguageCommand;
-        public RelayCommand<BaseLanguagePack> ChangeLanguageCommand => _changeLanguageCommand ?? (_changeLanguageCommand = new RelayCommand<BaseLanguagePack>(ChangeLanguage));
+        private RelayCommand<LanguagePackBase> _changeLanguageCommand;
+        public RelayCommand<LanguagePackBase> ChangeLanguageCommand => _changeLanguageCommand ?? (_changeLanguageCommand = new RelayCommand<LanguagePackBase>(ChangeLanguage));
         private RelayCommand _showMessageCommand;
         public RelayCommand ShowMessageCommand => _showMessageCommand ?? (_showMessageCommand = new RelayCommand(ShowMessage));
 
@@ -32,7 +32,7 @@ namespace Localization.Demo
             MessageBox.Show(LocalizationService.GetString("511", "Text", "Message"),LocalizationService.GetString("511", "Header","Header"));
         }
 
-        private void ChangeLanguage(BaseLanguagePack value)
+        private void ChangeLanguage(LanguagePackBase value)
         {
             if (value != null)
             {
@@ -41,11 +41,11 @@ namespace Localization.Demo
             }
         }
 
-        private ObservableCollection<BaseLanguagePack> _cultures = new ObservableCollection<BaseLanguagePack>();
-        private BaseLanguagePack _selectedPack;
+        private ObservableCollection<LanguagePackBase> _cultures = new ObservableCollection<LanguagePackBase>();
+        private LanguagePackBase _selectedPack;
         private ObservableCollection<MenuItem> _cultureMenus = new ObservableCollection<MenuItem>();
 
-        public ObservableCollection<BaseLanguagePack> Cultures
+        public ObservableCollection<LanguagePackBase> Cultures
         {
             get => _cultures; set
             {
@@ -63,7 +63,7 @@ namespace Localization.Demo
         }
         public int LanguageCount => Cultures.Count;
 
-        public BaseLanguagePack SelectedPack
+        public LanguagePackBase SelectedPack
         {
             get => _selectedPack;
             set

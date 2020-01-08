@@ -5,7 +5,7 @@ using Rasyidf.Localization.Parsers;
 
 namespace Rasyidf.Localization.Providers
 {
-    public class JsonStream : BaseLanguagePack
+    public class JsonStream : LanguagePackBase
     { 
 
         public string Path { get; set; }

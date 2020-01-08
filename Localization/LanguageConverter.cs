@@ -103,9 +103,9 @@ namespace Rasyidf.Localization
 
         #region Privates
 
-        static BaseLanguagePack ResolveDictionary()
+        static LanguagePackBase ResolveDictionary()
         {
-            var dictionary = BaseLanguagePack.GetResources(LocalizationService.Current.Culture);
+            var dictionary = LanguagePackBase.GetResources(LocalizationService.Current.Culture);
 
             if (dictionary == null)
             {

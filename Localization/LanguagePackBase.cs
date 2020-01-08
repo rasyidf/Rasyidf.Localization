@@ -6,19 +6,18 @@ using System.Globalization;
 
 namespace Rasyidf.Localization
 {
-    public abstract class BaseLanguagePack
+    public abstract class LanguagePackBase
     {
         #region Fields
 
-        public static readonly BaseLanguagePack Null = new NullStream();
+        public static readonly LanguagePackBase Null = new NullStream();
 
         #endregion Fields
 
         #region Properties
 
         public CultureInfo Culture => CultureInfo.GetCultureInfo(CultureId);
-
-
+         
         #endregion Properties
 
         #region Public Methods
@@ -57,32 +56,34 @@ namespace Rasyidf.Localization
             return OnTranslate(uid, vid, defaultValue, type);
         }
 
-        public static void RegisterDictionary(CultureInfo cultureInfo, BaseLanguagePack dictionary)
+        public static void RegisterDictionary(CultureInfo cultureInfo, LanguagePackBase dictionary)
         {
-            if (!LocalizationService.RegisteredPacks.ContainsKey(cultureInfo))
+            if (LocalizationService.RegisteredPacks.ContainsKey(cultureInfo))
             {
-                LocalizationService.RegisteredPacks.Add(cultureInfo, dictionary);
+                return;
             }
+            LocalizationService.RegisteredPacks.Add(cultureInfo, dictionary);
         }
 
         public static void UnregisterDictionary(CultureInfo cultureInfo)
         {
-            if (LocalizationService.RegisteredPacks.ContainsKey(cultureInfo))
+            if (!LocalizationService.RegisteredPacks.ContainsKey(cultureInfo))
             {
-                LocalizationService.RegisteredPacks.Remove(cultureInfo);
+                return;
             }
+            LocalizationService.RegisteredPacks.Remove(cultureInfo);
         }
 
-        public static BaseLanguagePack GetResources(CultureInfo cultureInfo)
+        public static LanguagePackBase GetResources(CultureInfo cultureInfo)
         {
-            if (cultureInfo == null)
+            if (cultureInfo is null)
             {
                 throw new ArgumentNullException(nameof(cultureInfo));
             }
 
             if (!LocalizationService.RegisteredPacks.ContainsKey(cultureInfo)) return Null;
 
-            BaseLanguagePack dictionary = LocalizationService.RegisteredPacks[cultureInfo];
+            LanguagePackBase dictionary = LocalizationService.RegisteredPacks[cultureInfo];
             return dictionary;
         }
 
@@ -176,7 +177,7 @@ namespace Rasyidf.Localization
 
         #region Null Pack
 
-        public sealed class NullStream : BaseLanguagePack
+        public sealed class NullStream : LanguagePackBase
         {
             protected override void OnLoad()
             {
