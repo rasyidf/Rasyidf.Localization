@@ -1,11 +1,12 @@
 # Rasyidf Localization
+![Nuget](https://img.shields.io/nuget/dt/Rasyidf.Localization)
 
-Fast and simple localization framework.
+Fast and simple localization framework for wpf. allow dynamic loading and multiple language pack.
 
 ## Getting Started
 
 ### Installation
-To use this framework. add nuget pack package:
+To use this framework. add nuget package:
 
 ```powershell
 Install-Package Rasyidf.Localization
@@ -19,58 +20,85 @@ Then register the the services on App.cs
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            LocalizationService.Current.Register("Assets/Languages", "en-US");
+            // set the language packs folder and default language
+            LanguageService.Current.Initialize("Assets/Languages", "en-US");
         }
         ...
 ```
 
 ### Usage
 
+after installing and loading th assembly, add namespace in the xaml 
+``` xml
+xmlns:rf="clr-namespace:Rasyidf.Localization;assembly=Rasyidf.Localization"
+```
 All set, now you can implement Binding in any XAML like this:
 
-```xml 
-<!-- Bind like this-->
-<MenuItem Header="{ul:Tr File, Uid=11}"/>
-
-<!--Or this -->
-<TextBlock Text="{ul:Tr Default='Default Hello World', Uid=11}"/>
-<TextBlock Text="{ul:Tr FallBackText, Uid=12}"/>
-<!-- Or this, with Format String -->
-<TextBlock>
-	<Run>
-		<ul:Tr Uid="24" Default="Language : {0}, Count : {1} ">
-			<Binding FallbackValue="en-US" Mode="OneWay"
-				Path="CurrentLanguage" />
-			<Binding FallbackValue="0" Mode="OneWay"
-				Path="LanguageCount" />
-		</ul:Tr>
-	</Run>
-</TextBlock>
-
+Bind like this
+``` xml 
+<MenuItem Header="{rf:Tr File, Uid=11}"/>
 ```
 
-or you can call in code behind
+Or this
+
+``` xml
+<TextBlock Text="{rf:Tr Default='Default Hello World', Uid=11}"/>
+<TextBlock Text="{rf:Tr FallBackText, Uid=12}"/>
+```
+Or this, with Format String
+``` xml
+<TextBlock>
+    <Run>
+        <rf:Tr Uid="24" Default="Language : {0}, Count : {1} ">
+            <Binding FallbackValue="en-US" Mode="OneWay"
+                Path="CurrentLanguage" />
+            <Binding FallbackValue="0" Mode="OneWay"
+                Path="LanguageCount" />
+        </rf:Tr>
+    </Run>
+</TextBlock>
+```
+
+in code, you can consume directly by using : 
 
 ```csharp
-	MessageBox.Show(LocalizationService.GetString("511", "Text", "Default Message"),LocalizationService.GetString("511", "Header","Default Title"));
+MessageBox.Show(LocalizationService.GetString("511", "Text", "Default Message"),LocalizationService.GetString("511", "Header","Default Title"));
+```
+another way is to use String extension. `"[uid],[vid]".Localize("[Default]")`
+
+```csharp
+MessageBox.Show("511,Text".Localize("Default Message"),("511,Header").Localize("Default Title"));
 ```
 
 ### Language Packs
 
 The Language Pack can be XML or JSON like below, put in the language folder:
 
-In XML
+> Version 0.5 support some additional metadata (AppId, Author, Type, Version) planned for future version.
+
+
+#### XML Language Pack
+
+
 ```xml
-<Pack EnglishName="English" CultureName="English" Culture="en-US">
+<Pack Version="0.5" AppId="YourAppId" Author="Rasyid" EnglishName="English" CultureName="English" Culture="en-US">
   <Value Id="0" Header="Window Title" />
   <Value Id="11" Header="File" />
-  <Value Id="110" Header="Exit" /> 
+  <Value Id="110" Header="Exit"  /> 
+  ...
+  <Value Id="511" Header="Hello Wold" Text="This Is message String" />
 </Pack>
 ```
+ 
+#### JSON Language Pack
 
-Or In Json
+> Version 0.5 Support Json Multilingual Package.
+
+##### Single Language Pack
+
 ```json
-{
+{   "AppId" : "YourAppId",
+    "Version" : "0.5", "Type" : "Single", 
     "EnglishName": "Indonesian", "CultureName": "Bahasa Indonesia",
     "Culture": "id-ID",
     "Data": [ 
@@ -81,8 +109,49 @@ Or In Json
 }
 ```
 
+##### Multi Language Pack
+```json
+{
+  "AppId": "",
+  "Version": "0.5",
+  "Type": "Multi",
+  "Author": "Rasyid",
+  "Languages": [
+    {
+      "CultureId": "en-US"  
+    },
+    {
+      "CultureId": "de-DE" 
+    }
+  ],
+
+  "Data": [
+    {
+      "data": [
+        {
+          "Id": 0,
+          "Text": {
+            "en-US": "Hello", "de-DE": "Hallo"
+          }
+        }, 
+      ]
+    }
+    ]
+  }
+}
+```
+
 All Done :)
 
+## What is new
+
+0.5.0
+* Translation string extension use `"UID, VID".Translate()` to get localized string.
+* Multiple Language pack in single file.
+* Decouple LanguageStream with Language Item.
+
+0.4.0
+* Raw support for xml
 
 ## Authors
 

@@ -6,40 +6,48 @@ using System.Globalization;
 
 namespace Rasyidf.Localization
 {
-    public abstract class BaseLanguagePack
+    /// <summary>
+    /// 
+    /// </summary>
+    public class LanguageItem
     {
-        #region Fields
-
-        public static readonly BaseLanguagePack Null = new NullStream();
-
-        #endregion Fields
-
-        #region Properties
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public static LanguageItem Default = new LanguageItem()
+        {
+            CultureName = CultureInfo.InstalledUICulture.NativeName,
+            EnglishName = CultureInfo.InstalledUICulture.EnglishName,
+            CultureId = CultureInfo.InstalledUICulture.Name,
+            RTL = false,
+            Author = "Anonymous"
+        };
+        /// <summary>
+        /// 
+        /// </summary>
         public CultureInfo Culture => CultureInfo.GetCultureInfo(CultureId);
-
-
-        #endregion Properties
 
         #region Public Methods
 
-        public void Load()
-        {
-            OnLoad();
-            IsLoaded = true;
-        }
-
-        public void Unload()
-        {
-            OnUnload();
-            IsLoaded = false;
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="uid"></param>
+        /// <param name="vid"></param>
+        /// <returns></returns>
         public TValue Translate<TValue>(string uid, string vid)
         {
             return (TValue)Translate(uid, vid, null, typeof(TValue));
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="uid"></param>
+        /// <param name="vid"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
         public TValue Translate<TValue>(string uid, string vid, TValue defaultValue)
         {
             try
@@ -48,65 +56,64 @@ namespace Rasyidf.Localization
             }
             catch (Exception)
             {
-                return defaultValue; 
-            }          
-        }
-
-        public object Translate(string uid, string vid, object defaultValue, Type type)
-        {
-            return OnTranslate(uid, vid, defaultValue, type);
-        }
-
-        public static void RegisterDictionary(CultureInfo cultureInfo, BaseLanguagePack dictionary)
-        {
-            if (!LocalizationService.RegisteredPacks.ContainsKey(cultureInfo))
-            {
-                LocalizationService.RegisteredPacks.Add(cultureInfo, dictionary);
+                return defaultValue;
             }
         }
-
-        public static void UnregisterDictionary(CultureInfo cultureInfo)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="valueId"></param>
+        /// <param name="defaultValue"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public object Translate(string uid, string valueId, object defaultValue, Type type)
         {
-            if (LocalizationService.RegisteredPacks.ContainsKey(cultureInfo))
-            {
-                LocalizationService.RegisteredPacks.Remove(cultureInfo);
-            }
+            return OnTranslate(uid, valueId, defaultValue, type);
         }
-
-        public static BaseLanguagePack GetResources(CultureInfo cultureInfo)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cultureInfo"></param>
+        /// <returns></returns>
+        public static LanguageItem GetResources(CultureInfo cultureInfo)
         {
-            if (cultureInfo == null)
+            if (cultureInfo is null)
             {
                 throw new ArgumentNullException(nameof(cultureInfo));
             }
 
-            if (!LocalizationService.RegisteredPacks.ContainsKey(cultureInfo)) return Null;
+            if (!LanguageService.RegisteredPacks.ContainsKey(cultureInfo)) return Default;
 
-            BaseLanguagePack dictionary = LocalizationService.RegisteredPacks[cultureInfo];
+            LanguageItem dictionary = LanguageService.RegisteredPacks[cultureInfo];
             return dictionary;
         }
 
         #endregion Public Methods
-
-        #region Overrideables
-
+         /// <summary>
+         /// 
+         /// </summary>
+        public string Version { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string CultureId { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string CultureName { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string EnglishName { get; set; }
-
-        public bool IsLoaded { get; set; }
+        public bool RTL { get; set; }
+        public string Author { get; set; }
 
         internal Dictionary<string, Dictionary<string, string>> Data =
             new Dictionary<string, Dictionary<string, string>>();
 
-        protected abstract void OnLoad();
-
-        protected abstract void OnUnload();
-
         private object OnTranslate(string uid, string vid, object defaultValue, Type type)
         {
-
-
             if (string.IsNullOrEmpty(uid))
             {
                 #region Trace
@@ -137,6 +144,7 @@ namespace Rasyidf.Localization
 
                 return defaultValue;
             }
+
             Dictionary<string, string> innerData = Data[uid];
 
             if (!innerData.ContainsKey(vid))
@@ -156,9 +164,8 @@ namespace Rasyidf.Localization
                     return textValue;
 
 
-                TypeConverter typeConverter = TypeDescriptor.GetConverter(type);
-                object translation = typeConverter.ConvertFromString(textValue);
-                return translation;
+                return TypeDescriptor.GetConverter(type)
+                                     .ConvertFromString(textValue);
 
             }
             catch (Exception ex)
@@ -169,28 +176,8 @@ namespace Rasyidf.Localization
 
                 #endregion Trace
 
-                return null;
+                return defaultValue;
             }
         }
-        #endregion Overrideables
-
-        #region Null Pack
-
-        public sealed class NullStream : BaseLanguagePack
-        {
-            protected override void OnLoad()
-            {
-                CultureName = CultureInfo.InstalledUICulture.NativeName;
-                EnglishName = CultureInfo.InstalledUICulture.EnglishName;
-                CultureId = CultureInfo.InstalledUICulture.Name;
-            }
-
-            protected override void OnUnload()
-            {
-            }
-
-        }
-
-        #endregion Null Pack
     }
 }

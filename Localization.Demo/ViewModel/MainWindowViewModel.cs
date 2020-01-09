@@ -12,40 +12,41 @@ namespace Localization.Demo
 
         public MainWindowViewModel()
         {
-            var a = LocalizationService.RegisteredPacks;
+            var a = LanguageService.RegisteredPacks;
             var cultures = a.Keys;
             foreach (var culture in cultures)
             {
-                var pack = BaseLanguagePack.GetResources(culture);
+                var pack = LanguageItem.GetResources(culture);
                 Cultures.Add(pack);
                 CultureMenus.Add(new MenuItem() { Header= $"{pack.EnglishName} ({pack.CultureName})", Tag = pack });
             }
         }
 
-        private RelayCommand<BaseLanguagePack> _changeLanguageCommand;
-        public RelayCommand<BaseLanguagePack> ChangeLanguageCommand => _changeLanguageCommand ?? (_changeLanguageCommand = new RelayCommand<BaseLanguagePack>(ChangeLanguage));
+        private RelayCommand<LanguageItem> _changeLanguageCommand;
+        public RelayCommand<LanguageItem> ChangeLanguageCommand => _changeLanguageCommand ?? (_changeLanguageCommand = new RelayCommand<LanguageItem>(ChangeLanguage));
+        
         private RelayCommand _showMessageCommand;
         public RelayCommand ShowMessageCommand => _showMessageCommand ?? (_showMessageCommand = new RelayCommand(ShowMessage));
 
         private void ShowMessage(object obj)
         {
-            MessageBox.Show(LocalizationService.GetString("511", "Text", "Message"),LocalizationService.GetString("511", "Header","Header"));
+            MessageBox.Show(Application.Current.MainWindow,"511,Text".Localize() ,LanguageService.GetString("511", "Header","Header"));
         }
 
-        private void ChangeLanguage(BaseLanguagePack value)
+        private void ChangeLanguage(LanguageItem value)
         {
             if (value != null)
             {
-                LocalizationService.Current.ChangeLanguage(value);
+                LanguageService.Current.ChangeLanguage(value);
                 OnPropertyChanged(nameof(SelectedPack));
             }
         }
 
-        private ObservableCollection<BaseLanguagePack> _cultures = new ObservableCollection<BaseLanguagePack>();
-        private BaseLanguagePack _selectedPack;
+        private ObservableCollection<LanguageItem> _cultures = new ObservableCollection<LanguageItem>();
+        private LanguageItem _selectedPack;
         private ObservableCollection<MenuItem> _cultureMenus = new ObservableCollection<MenuItem>();
 
-        public ObservableCollection<BaseLanguagePack> Cultures
+        public ObservableCollection<LanguageItem> Cultures
         {
             get => _cultures; set
             {
@@ -63,13 +64,13 @@ namespace Localization.Demo
         }
         public int LanguageCount => Cultures.Count;
 
-        public BaseLanguagePack SelectedPack
+        public LanguageItem SelectedPack
         {
             get => _selectedPack;
             set
             {
                 _selectedPack = value;
-                LocalizationService.Current.ChangeLanguage(value);
+                LanguageService.Current.ChangeLanguage(value);
                 OnPropertyChanged(nameof(SelectedPack));
             }
         }

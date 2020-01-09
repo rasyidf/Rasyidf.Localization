@@ -6,19 +6,18 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Rasyidf.Localization.Parsers
+namespace Rasyidf.Localization
 {
     public static class JsonParser
     {
-        static Stack<List<string>> splitArrayPool = new Stack<List<string>>();
-        static StringBuilder stringBuilder = new StringBuilder();
+        static readonly Stack<List<string>> splitArrayPool = new Stack<List<string>>();
+        static readonly StringBuilder stringBuilder = new StringBuilder();
         static readonly Dictionary<Type, Dictionary<string, FieldInfo>> FieldInfoCache = new Dictionary<Type, Dictionary<string, FieldInfo>>();
         static readonly Dictionary<Type, Dictionary<string, PropertyInfo>> PropertyInfoCache = new Dictionary<Type, Dictionary<string, PropertyInfo>>();
 
         public static T FromJson<T>(this string json)
         {
-            if (string.IsNullOrEmpty(json)) return (T)ParseValue(typeof(T), "");
-            //Remove all whitespace not within strings to make parsing simpler
+            if (string.IsNullOrEmpty(json)) return (T)ParseValue(typeof(T), ""); 
             stringBuilder.Clear();
             for (var i = 0; i < json.Length; i++)
             {
@@ -50,7 +49,7 @@ namespace Rasyidf.Localization.Parsers
                         if (appendEscapeCharacter)
                             stringBuilder.Append(json[i]);
                         stringBuilder.Append(json[i + 1]);
-                        i++;//Skip next character as it is escaped
+                        i++; 
                         break;
                     }
                     case '\"':

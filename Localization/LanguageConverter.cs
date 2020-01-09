@@ -5,6 +5,9 @@ using System.Windows.Data;
 
 namespace Rasyidf.Localization
 {
+    /// <summary>
+    /// Language Converter class for binding.
+    /// </summary>
     public class LanguageConverter : IValueConverter, IMultiValueConverter
     {
         #region Fields
@@ -61,7 +64,7 @@ namespace Rasyidf.Localization
                     _uid = values[1].ToString();
                     --parametersCount;
                 }
-                var dictionary = ResolveDictionary();
+                LanguageItem dictionary = ResolveDictionary();
                 var translatedObject = dictionary.Translate(_uid, _vid, _defaultValue, targetType);
 
                 if (translatedObject == null || parametersCount == 0) return translatedObject;
@@ -96,21 +99,21 @@ namespace Rasyidf.Localization
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            return new object[0];
+            return Array.Empty<object>();
         }
 
         #endregion IMultiValueConverter Members
 
         #region Privates
 
-        static BaseLanguagePack ResolveDictionary()
+        static LanguageItem ResolveDictionary()
         {
-            var dictionary = BaseLanguagePack.GetResources(LocalizationService.Current.Culture);
+            var dictionary = LanguageItem.GetResources(LanguageService.Current.Culture);
 
-            if (dictionary == null)
+            if (dictionary is null)
             {
                 throw new InvalidOperationException(
-                    $"Pack for language {LocalizationService.Current.Culture} was not found");
+                    $"Pack for language {LanguageService.Current.Culture} was not found");
             }
 
             return dictionary;

@@ -1,0 +1,157 @@
+﻿{
+  "AppId": "",
+  "Version": "0.5",
+  "Type": "Multi",
+  "Author": "Rasyid",
+  "Languages": [
+    {
+      "EnglishName": "English",
+      "CultureName": "United Kingdom",
+      "Culture": "en-GB",
+      "RTL" :  "false"
+    },
+    {
+      "EnglishName": "Italian",
+      "CultureName": "Italy",
+      "Culture": "it-IT",
+      "RTL": "false"
+    }
+  ],
+
+  "Data": [
+    {
+      "data": [
+        {
+          "Id": 0,
+          "Title": {
+            "en-GB": "Demo Window",
+            "it-IT": "Demo Window"
+          }
+        },
+        {
+          "Id": 11,
+          "Header": {
+            "en-GB": "File",
+            "it-IT": "File"
+          }
+        },
+        {
+          "Id": 110,
+          "Header": {
+            "en-GB": "Quit",
+            "it-IT": "Quit"
+          }
+        },
+        {
+          "Id": 12,
+          "Header": {
+            "en-GB": "Edit",
+            "it-IT": "Edit"
+          }
+        },
+        {
+          "Id": 120,
+          "Header": {
+            "en-GB": "Cut",
+            "it-IT": "Cut"
+          }
+        },
+        {
+          "Id": 121,
+          "Header": {
+            "en-GB": "Copy",
+            "it-IT": "Copy"
+          }
+        },
+        {
+          "Id": 122,
+          "Header": {
+            "en-GB": "Paste",
+            "it-IT": "Paste"
+          }
+        },
+        {
+          "Id": 123,
+          "Header": {
+            "en-GB": "Option",
+            "it-IT": "Option"
+          }
+        },
+        {
+          "Id": 13,
+          "Header": {
+            "en-GB": "View",
+            "it-IT": "View"
+          }
+        },
+        {
+          "Id": 130,
+          "Header": {
+            "en-GB": "Status Bar",
+            "it-IT": "Status Bar"
+          }
+        },
+        {
+          "Id": 14,
+          "Header": {
+            "en-GB": "Language",
+            "it-IT": "Language"
+          }
+        },
+        {
+          "Id": 15,
+          "Header": {
+            "en-GB": "Help",
+            "it-IT": "Help"
+          }
+        },
+        {
+          "Id": 150,
+          "Header": {
+            "en-GB": "About",
+            "it-IT": "About"
+          }
+        },
+        {
+          "Id": 21,
+          "Text": {
+            "en-GB": "This is rasyidf.localize demo program",
+            "it-IT": "This is rasyidf.localize demo program"
+          }
+        },
+        {
+          "Id": 22,
+          "Text": {
+            "en-GB": "Select your language:",
+            "it-IT": "Select your language:"
+          }
+        },
+        {
+          "Id": 24,
+          "Text": {
+            "en-GB": "Languages :",
+            "it-IT": "Languages :"
+          }
+        },
+        {
+          "Id": 510,
+          "Content": {
+            "en-GB": "Hello",
+            "it-IT": "Hello"
+          }
+        },
+        {
+          "Id": 511,
+          "Header": {
+            "en-GB": "Hello World",
+            "it-IT": "Hello World"
+          },
+          "Text": {
+            "en-GB": "this is a message",
+            "it-IT": "this is a message"
+          }
+        }
+      ]
+    }
+  ]
+}

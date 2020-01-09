@@ -12,7 +12,7 @@ namespace Localization.Demo
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            LocalizationService.Current.Register("Languages","en-US");  
+            LanguageService.Current.Initialize();  
 
         }
 
