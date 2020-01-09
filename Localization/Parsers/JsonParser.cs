@@ -6,12 +6,12 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Rasyidf.Localization.Parsers
+namespace Rasyidf.Localization
 {
     public static class JsonParser
     {
-        static Stack<List<string>> splitArrayPool = new Stack<List<string>>();
-        static StringBuilder stringBuilder = new StringBuilder();
+        static readonly Stack<List<string>> splitArrayPool = new Stack<List<string>>();
+        static readonly StringBuilder stringBuilder = new StringBuilder();
         static readonly Dictionary<Type, Dictionary<string, FieldInfo>> FieldInfoCache = new Dictionary<Type, Dictionary<string, FieldInfo>>();
         static readonly Dictionary<Type, Dictionary<string, PropertyInfo>> PropertyInfoCache = new Dictionary<Type, Dictionary<string, PropertyInfo>>();
 

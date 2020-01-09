@@ -1,4 +1,4 @@
-﻿using Rasyidf.Localization.Providers;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -127,22 +127,12 @@ namespace Rasyidf.Localization
             { 
 
                 var filepath = path + @"\" + t.Name;
-
-                StreamBase LanguagePackStream;
-
-                switch (t.Extension)
+                StreamBase LanguagePackStream = t.Extension switch
                 {
-                    case ".xml":
-                        LanguagePackStream = new XmlStream(filepath);
-                        break;
-
-                    case ".json":
-                        LanguagePackStream = new JsonStream(filepath);
-                        break;
-                    default:
-                        LanguagePackStream = new NullStream();
-                        break;
-                }
+                    ".xml" => new XmlStream(filepath),
+                    ".json" => new JsonStream(filepath),
+                    _ => new NullStream(),
+                };
 
                 LanguagePackStream.Load(); 
                 StreamBase.RegisterPacks(LanguagePackStream); 
@@ -176,12 +166,12 @@ namespace Rasyidf.Localization
          /// 
          /// </summary>
          /// <param name="uid"></param>
-         /// <param name="valueid"></param>
+         /// <param name="valueId"></param>
          /// <param name="default"></param>
          /// <returns></returns>
-        public static string GetString(string uid, string valueid, string @default = "")
+        public static string GetString(string uid, string valueId, string @default = "")
         {
-            return Current.LanguagePack.Translate(uid, valueid, @default);
+            return Current.LanguagePack.Translate(uid, valueId, @default);
         }
 
 

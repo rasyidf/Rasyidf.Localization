@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using Rasyidf.Localization.Parsers;
 
-namespace Rasyidf.Localization.Providers
+namespace Rasyidf.Localization
 {
     public class JsonStream : StreamBase
     {
@@ -127,8 +126,10 @@ namespace Rasyidf.Localization.Providers
                     }
 
                 }
-
-                Packs.AddRange(temps.Values);
+                foreach (var item in temps.Values)
+                {
+                    Packs.Add(item); 
+                }
                 temps.Clear();
             }
         }

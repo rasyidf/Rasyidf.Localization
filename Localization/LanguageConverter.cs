@@ -99,7 +99,7 @@ namespace Rasyidf.Localization
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            return new object[0];
+            return Array.Empty<object>();
         }
 
         #endregion IMultiValueConverter Members

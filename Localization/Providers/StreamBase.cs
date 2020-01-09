@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -19,7 +20,7 @@ namespace Rasyidf.Localization
         /// <summary>
         /// Language Packages
         /// </summary>
-        public List<LanguageItem> Packs { get; set; }
+        public Collection<LanguageItem> Packs { get; set; }
 
         /// <summary>
         /// 
@@ -31,7 +32,7 @@ namespace Rasyidf.Localization
         /// </summary>
         public void Load()
         {
-            Packs = new List<LanguageItem>();
+            Packs = new Collection<LanguageItem>();
             OnLoad();
             IsLoaded = true;
         }
