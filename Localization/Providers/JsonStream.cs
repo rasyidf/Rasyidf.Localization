@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Rasyidf.Localization.Parsers;
 
@@ -30,13 +31,8 @@ namespace Rasyidf.Localization.Providers
 
             var a = fileJson.FromJson<Dictionary<string, object>>();
             if (a == null) throw new FileFormatException("Json load failed");
-            var tmp = new LanguageItem()
-            {
-                Version = SetIfContains(a, "Version"),
-                EnglishName = SetIfContains(a, "EnglishName"),
-                CultureName = SetIfContains(a, "CultureName"),
-                CultureId = SetIfContains(a, "Culture")
-            };
+
+            var author = SetIfContains(a, "Author","Anonymous");
 
             bool IsSinglePack = false;
 
@@ -50,6 +46,16 @@ namespace Rasyidf.Localization.Providers
 
             if (IsSinglePack)
             {
+                var tmp = new LanguageItem()
+                {
+                    Version = SetIfContains(a, "Version"),
+                    Author = author,
+                    EnglishName = SetIfContains(a, "EnglishName"),
+                    CultureName = SetIfContains(a, "CultureName"),
+                    CultureId = SetIfContains(a, "Culture"),
+                    RTL = Convert.ToBoolean(SetIfContains(a, "RTL"))
+                };
+
                 if (!(a["Data"] is List<object> data)) return;
 
                 foreach (Dictionary<string, object> node in data)
@@ -66,7 +72,64 @@ namespace Rasyidf.Localization.Providers
 
                     tmp.Data.Add(node["Id"].ToString(), innerData);
                 }
+                
                 Packs.Add(tmp);
+            } else
+            {
+                Dictionary<string, LanguageItem> temps = new Dictionary<string, LanguageItem>();
+
+                if (!(a["Languages"] is List<object> langs)) return;
+
+                foreach (Dictionary<string, object> node in langs)
+                {
+                    if (node == null) continue;
+                    var tmp = new LanguageItem()
+                    {
+                        EnglishName = SetIfContains(node, "EnglishName"),
+                        CultureName = SetIfContains(node, "CultureName"),
+                        Author = author,
+                        CultureId = SetIfContains(node, "Culture"),
+                        RTL = Convert.ToBoolean(SetIfContains(a, "RTL"))
+                    };
+                    temps.Add(tmp.CultureId, tmp);
+                }
+
+                if (!(a["Data"] is List<object> data)) return;
+
+                foreach (Dictionary<string, object> node in data)
+                {
+                    if (node == null) continue;
+                    var innerData = new Dictionary<string,Dictionary<string, string>>();
+                    foreach (var attribute in node)
+                    {
+                        if (attribute.Key == "id")
+                        {
+                            Debug.Print(attribute.Value.ToString());
+                            continue;
+                        }
+                        if (!(attribute.Value is List<object> child)) continue;
+                        foreach (var item in child)
+                        {
+                            if (item is Dictionary<string,string> dict)
+                            {
+                                foreach (var di in dict)
+                                {
+                                    innerData[di.Key][attribute.Key] = di.Value.ToString();
+                                }
+                            } 
+                        }
+                    }
+                    foreach (var item in innerData)
+                    {
+                        if (temps[item.Key].Data.ContainsKey(node["Id"].ToString())) continue;
+
+                        temps[item.Key].Data.Add(node["Id"].ToString(), item.Value);
+                    }
+
+                }
+
+                Packs.AddRange(temps.Values);
+                temps.Clear();
             }
         }
 

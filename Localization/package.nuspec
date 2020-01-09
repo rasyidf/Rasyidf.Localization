@@ -4,7 +4,7 @@
     <!--*-->
     <id>Rasyidf.Localization</id>
     <!--*-->
-    <version>0.3.0</version>
+    <version>0.5.0</version>
     <title>Rasyidf.Localization</title>
     <!--*-->
     <authors>Rasyidf</authors>
@@ -16,8 +16,11 @@
     <description>WPF Localization Framework</description>
     <!--*-->
     <releaseNotes>Functional Release</releaseNotes>
-    <copyright>Copyright © 2019 Rasyidf</copyright>
+    <copyright>Copyright © 2020 Rasyidf</copyright>
     <tags>Localization, MultiLanguage, WpfLocalization, CSharp, Internationalization, WPF, Globalization, i18n, l12n</tags>
  
   </metadata>
+  <files>
+    <file src="lib\**" target="lib/{framework name}[{version}]" />
+  </files>
 </package>

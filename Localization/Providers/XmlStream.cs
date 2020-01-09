@@ -32,6 +32,7 @@ namespace Rasyidf.Localization.Providers
             var tmp = new LanguageItem()
             {
                 Version = docElement.Attributes["Version"]?.Value,
+                Author = docElement.Attributes["Author"]?.Value, 
                 EnglishName = docElement.Attributes["EnglishName"]?.Value,
                 CultureName = docElement.Attributes["CultureName"]?.Value,
                 CultureId = docElement.Attributes["Culture"]?.Value,

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Pack version="0.4" EnglishName="English" CultureName="English" Culture="en-US">
+<Pack AppId="LOCADEMO" version="0.5" Author="Rasyid" EnglishName="English" CultureName="English" Culture="en-US">
   <Value Id="0" Title="Demo Window" />
   <Value Id="11" Header="File" />
   <Value Id="110" Header="Exit" />

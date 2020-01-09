@@ -10,6 +10,9 @@ using System.Threading;
 
 namespace Rasyidf.Localization
 {
+    /// <summary>
+    /// Language Service Across Sessions
+    /// </summary>
     public class LanguageService : INotifyPropertyChanged
     {
         
@@ -21,7 +24,9 @@ namespace Rasyidf.Localization
         #endregion Fields
 
         #region Properties
-
+        /// <summary>
+        /// 
+        /// </summary>
         public CultureInfo Culture
         {
             get => _cultureInfo ?? (_cultureInfo = CultureInfo.CurrentUICulture);
@@ -49,7 +54,14 @@ namespace Rasyidf.Localization
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static Dictionary<CultureInfo, LanguageItem> RegisteredPacks { get; } = new Dictionary<CultureInfo, LanguageItem>();
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public LanguageItem LanguagePack
         {
             get => _pack;
@@ -64,7 +76,9 @@ namespace Rasyidf.Localization
 
         #endregion Properties
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static LanguageService Current { get; } = new LanguageService();
 
         /// <summary>
@@ -87,9 +101,16 @@ namespace Rasyidf.Localization
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
-
+       
+        /// <summary>
+        /// 
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
         public static void ScanLanguagesInFolder(string path)
         {
             if (!Directory.Exists(path))
@@ -128,13 +149,22 @@ namespace Rasyidf.Localization
             }
              
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="extensions"></param>
+        /// <returns></returns>
         public static IEnumerable<FileInfo> GetFilesByExtensions(DirectoryInfo directory, params string[] extensions)
         {
             var allowedExtensions = new HashSet<string>(extensions, StringComparer.OrdinalIgnoreCase);
             return directory.EnumerateFiles().Where(f => allowedExtensions.Contains(f.Extension));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
         public void ChangeLanguage(LanguageItem value)
         {
             _cultureInfo = value.Culture;
@@ -142,7 +172,13 @@ namespace Rasyidf.Localization
             LanguagePack = value;
             OnPropertyChanged(nameof(Culture));
         }
-         
+         /// <summary>
+         /// 
+         /// </summary>
+         /// <param name="uid"></param>
+         /// <param name="valueid"></param>
+         /// <param name="default"></param>
+         /// <returns></returns>
         public static string GetString(string uid, string valueid, string @default = "")
         {
             return Current.LanguagePack.Translate(uid, valueid, @default);
@@ -150,10 +186,21 @@ namespace Rasyidf.Localization
 
 
     }
-
+    /// <summary>
+    /// String Extension for Translation
+    /// </summary>
     public static class StringExtension
     {
-        public static string Translate(this string self, string @default = "", char separator =',')
+        /// <summary>
+        /// Localize string by uid and vid
+        /// separated by <paramref name="separator"/> with default of comma (',')
+        /// usage "10,Header".Localize();
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="default"></param>
+        /// <param name="separator"></param>
+        /// <returns>Return Localized string</returns>
+        public static string Localize(this string self, string @default = "", char separator =',')
         {
             var val = self.Split(separator);
             return LanguageService.GetString(val[0], val[1], @default);

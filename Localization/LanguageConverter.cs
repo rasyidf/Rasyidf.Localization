@@ -5,6 +5,9 @@ using System.Windows.Data;
 
 namespace Rasyidf.Localization
 {
+    /// <summary>
+    /// Language Converter class for binding.
+    /// </summary>
     public class LanguageConverter : IValueConverter, IMultiValueConverter
     {
         #region Fields

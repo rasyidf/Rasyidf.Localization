@@ -6,24 +6,48 @@ using System.Globalization;
 
 namespace Rasyidf.Localization
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class LanguageItem
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public static LanguageItem Default = new LanguageItem()
         {
             CultureName = CultureInfo.InstalledUICulture.NativeName,
             EnglishName = CultureInfo.InstalledUICulture.EnglishName,
-            CultureId = CultureInfo.InstalledUICulture.Name
+            CultureId = CultureInfo.InstalledUICulture.Name,
+            RTL = false,
+            Author = "Anonymous"
         };
-
+        /// <summary>
+        /// 
+        /// </summary>
         public CultureInfo Culture => CultureInfo.GetCultureInfo(CultureId);
 
         #region Public Methods
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="uid"></param>
+        /// <param name="vid"></param>
+        /// <returns></returns>
         public TValue Translate<TValue>(string uid, string vid)
         {
             return (TValue)Translate(uid, vid, null, typeof(TValue));
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="uid"></param>
+        /// <param name="vid"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
         public TValue Translate<TValue>(string uid, string vid, TValue defaultValue)
         {
             try
@@ -35,12 +59,23 @@ namespace Rasyidf.Localization
                 return defaultValue;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="valueId"></param>
+        /// <param name="defaultValue"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public object Translate(string uid, string valueId, object defaultValue, Type type)
         {
             return OnTranslate(uid, valueId, defaultValue, type);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cultureInfo"></param>
+        /// <returns></returns>
         public static LanguageItem GetResources(CultureInfo cultureInfo)
         {
             if (cultureInfo is null)
@@ -55,12 +90,24 @@ namespace Rasyidf.Localization
         }
 
         #endregion Public Methods
-         
+         /// <summary>
+         /// 
+         /// </summary>
         public string Version { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string CultureId { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string CultureName { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string EnglishName { get; set; }
-
+        public bool RTL { get; set; }
+        public string Author { get; set; }
 
         internal Dictionary<string, Dictionary<string, string>> Data =
             new Dictionary<string, Dictionary<string, string>>();
@@ -133,4 +180,4 @@ namespace Rasyidf.Localization
             }
         }
     }
-} 
+}

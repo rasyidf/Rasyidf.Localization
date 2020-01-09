@@ -30,7 +30,7 @@ namespace Localization.Demo
 
         private void ShowMessage(object obj)
         {
-            MessageBox.Show(Application.Current.MainWindow,"511,Text".Translate() ,LanguageService.GetString("511", "Header","Header"));
+            MessageBox.Show(Application.Current.MainWindow,"511,Text".Localize() ,LanguageService.GetString("511", "Header","Header"));
         }
 
         private void ChangeLanguage(LanguageItem value)

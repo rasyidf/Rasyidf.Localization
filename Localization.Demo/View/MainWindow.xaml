@@ -8,8 +8,8 @@
     xmlns:ul="clr-namespace:Rasyidf.Localization;assembly=Rasyidf.Localization"
     x:Name="Root"
     x:Uid="Root"
-    Width="321.899"
-    Height="338.275"
+    Width="432.425"
+    Height="320.412"
     mc:Ignorable="d">
     <Window.DataContext>
         <demo:MainWindowViewModel />
@@ -21,12 +21,15 @@
     <Window.Resources>
         <DataTemplate x:Key="LanguageDictionaryItemTemplate">
             <TextBlock><Run Text="{Binding EnglishName, Mode=OneWay}" />
-                (<Run Text="{Binding CultureName, Mode=OneWay}" />
-                )</TextBlock>
+                (<Run Text="{Binding CultureName, Mode=OneWay}" />)</TextBlock>
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <Menu Height="19" VerticalAlignment="Top">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="38*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Menu Height="19" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <MenuItem Header="{ul:Tr File, Uid=11}">
                 <MenuItem Header="{ul:Tr Exit, Uid=110}" />
             </MenuItem>
@@ -57,7 +60,7 @@
         <TextBlock
             Margin="10,24,10,0"
             VerticalAlignment="Top"
-            TextWrapping="Wrap">
+            TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16">
             <TextBlock.Text>
                 <ul:Tr Uid="21" Default="This is Dynamic Language Demo" />
             </TextBlock.Text>
@@ -68,15 +71,13 @@
             VerticalAlignment="Top"
             Text="{ul:Tr 'Select Language :',
                          Uid=22}"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap" Height="16" Width="92" />
         <ListBox
-            Height="140"
-            Margin="10,81,10,0"
-            VerticalAlignment="Top"
+            Margin="10,81,10,76"
             ItemTemplate="{DynamicResource LanguageDictionaryItemTemplate}"
             ItemsSource="{Binding Cultures}"
             SelectedItem="{Binding SelectedPack}" />
-        <StatusBar Height="24" VerticalAlignment="Bottom">
+        <StatusBar Height="24" VerticalAlignment="Bottom" Grid.ColumnSpan="2">
             <StatusBarItem Height="24" Width="100" VerticalAlignment="Top" >
                 <TextBlock Text="{ul:Tr 'Languages',
                          Uid=24}"/>
@@ -88,6 +89,6 @@
                             Path="LanguageCount" />
             </StatusBarItem>
         </StatusBar>
-        <Button Content="{ul:Tr Hallo, Uid=510}" Margin="73,0,0,29" Command="{Binding ShowMessageCommand}" VerticalAlignment="Bottom" Height="40" HorizontalAlignment="Left" Width="164"/>
+        <Button Content="{ul:Tr Hallo, Uid=510}" Margin="10,0,0,29" Command="{Binding ShowMessageCommand}" VerticalAlignment="Bottom" Height="30" HorizontalAlignment="Left" Width="143"/>
     </Grid>
 </Window>

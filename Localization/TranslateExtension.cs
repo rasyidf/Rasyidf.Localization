@@ -6,6 +6,10 @@ using System.Windows.Markup;
 
 namespace Rasyidf.Localization
 {
+    /// <summary>
+    /// Localize Extension
+    /// use Tr [default], uid=[uid]
+    /// </summary>
     [ContentProperty("Parameters")]
     public class Tr : MarkupExtension
     {
@@ -17,11 +21,16 @@ namespace Rasyidf.Localization
         #endregion Fields
 
         #region Initialization
-
+        /// <summary>
+        /// Constructor  
+        /// </summary>
         public Tr()
         {
         }
-
+        /// <summary>
+        /// Constructor with default value
+        /// </summary>
+        /// <param name="defaultValue"></param>
         public Tr(object defaultValue)
         {
             Default = defaultValue;
@@ -30,25 +39,41 @@ namespace Rasyidf.Localization
         #endregion Initialization
 
         #region Properties
-
+        /// <summary>
+        /// Get or set the default value 
+        /// </summary>
         public object Default { get; set; }
-
+        /// <summary>
+        /// Get or set the Unique Identifier
+        /// </summary>
         public string Uid { get; set; }
-
+        /// <summary>
+        /// Parameters Collection
+        /// </summary>
         public Collection<BindingBase> Parameters { get; } = new Collection<BindingBase>();
 
         #region UidProperty DProperty
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static string GetUid(DependencyObject obj)
         {
             return (string)obj.GetValue(UidProperty);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="value"></param>
         public static void SetUid(DependencyObject obj, string value)
         {
             obj.SetValue(UidProperty, value);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static readonly DependencyProperty UidProperty =
             DependencyProperty.RegisterAttached("Uid", typeof(string), typeof(Tr), new UIPropertyMetadata(string.Empty));
 
@@ -57,7 +82,11 @@ namespace Rasyidf.Localization
         #endregion Properties
 
         #region Overrides
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <returns></returns>
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             if (!(serviceProvider.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget service))
@@ -115,6 +144,7 @@ namespace Rasyidf.Localization
                 var bindingBase = (Binding) i;
                 multiBinding.Bindings.Add(bindingBase);
             }
+
             return multiBinding.ProvideValue(serviceProvider);
         }
 
