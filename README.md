@@ -1,5 +1,5 @@
 # Rasyidf Localization
-![Nuget](https://img.shields.io/nuget/dt/Rasyidf.Localization?style=flat-square)
+![Nuget](https://img.shields.io/nuget/dt/Rasyidf.Localization)
 
 Fast and simple localization framework for wpf. allow dynamic loading and multiple language pack.
 
@@ -28,9 +28,9 @@ Then register the the services on App.cs
 
 ### Usage
 
-then add namespace in the xaml 
+after installing and loading th assembly, add namespace in the xaml 
 ``` xml
-    xmlns:rf="clr-namespace:Rasyidf.Localization;assembly=Rasyidf.Localization"
+xmlns:rf="clr-namespace:Rasyidf.Localization;assembly=Rasyidf.Localization"
 ```
 All set, now you can implement Binding in any XAML like this:
 
@@ -44,31 +44,30 @@ Or this
 ``` xml
 <TextBlock Text="{rf:Tr Default='Default Hello World', Uid=11}"/>
 <TextBlock Text="{rf:Tr FallBackText, Uid=12}"/>
-Or this, with Format String
 ```
-
+Or this, with Format String
 ``` xml
 <TextBlock>
-	<Run>
-		<rf:Tr Uid="24" Default="Language : {0}, Count : {1} ">
-			<Binding FallbackValue="en-US" Mode="OneWay"
-				Path="CurrentLanguage" />
-			<Binding FallbackValue="0" Mode="OneWay"
-				Path="LanguageCount" />
-		</rf:Tr>
-	</Run>
+    <Run>
+        <rf:Tr Uid="24" Default="Language : {0}, Count : {1} ">
+            <Binding FallbackValue="en-US" Mode="OneWay"
+                Path="CurrentLanguage" />
+            <Binding FallbackValue="0" Mode="OneWay"
+                Path="LanguageCount" />
+        </rf:Tr>
+    </Run>
 </TextBlock>
 ```
 
 in code, you can consume directly by using : 
 
 ```csharp
-	MessageBox.Show(LocalizationService.GetString("511", "Text", "Default Message"),LocalizationService.GetString("511", "Header","Default Title"));
+MessageBox.Show(LocalizationService.GetString("511", "Text", "Default Message"),LocalizationService.GetString("511", "Header","Default Title"));
 ```
 another way is to use String extension. `"[uid],[vid]".Localize("[Default]")`
 
 ```csharp
-	MessageBox.Show("511,Text".Localize("Default Message"),("511,Header").Localize("Default Title"));
+MessageBox.Show("511,Text".Localize("Default Message"),("511,Header").Localize("Default Title"));
 ```
 
 ### Language Packs
@@ -95,7 +94,7 @@ The Language Pack can be XML or JSON like below, put in the language folder:
 
 > Version 0.5 Support Json Multilingual Package.
 
-##### Multi Language Pack
+##### Single Language Pack
 
 ```json
 {   "AppId" : "YourAppId",
@@ -119,12 +118,10 @@ The Language Pack can be XML or JSON like below, put in the language folder:
   "Author": "Rasyid",
   "Languages": [
     {
-      "CultureId": "en-US",
-      ....
+      "CultureId": "en-US"  
     },
     {
-      "CultureId": "de-DE",
-      ....
+      "CultureId": "de-DE" 
     }
   ],
 
@@ -139,6 +136,7 @@ The Language Pack can be XML or JSON like below, put in the language folder:
         }, 
       ]
     }
+    ]
   }
 }
 ```
