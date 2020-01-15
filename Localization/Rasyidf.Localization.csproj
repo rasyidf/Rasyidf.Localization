@@ -94,7 +94,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TranslateExtension.cs" />
+    <Compile Include="LanguageExtension.cs" />
     <AppDesigner Include="Properties\" />
     <Compile Include="Providers\XmlStream.cs" />
   </ItemGroup>
