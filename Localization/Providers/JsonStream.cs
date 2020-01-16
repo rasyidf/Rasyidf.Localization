@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-
-namespace Rasyidf.Localization
+﻿namespace Rasyidf.Localization
 {
     public class JsonStream : StreamBase
     {
-
-
-
         public JsonStream(string path)
         {
             if (!File.Exists(path))
@@ -17,7 +9,7 @@ namespace Rasyidf.Localization
             Path = path;
         }
 
-        static string SetIfContains(Dictionary<string, object> pairs, string key, string defaults = "")
+        private static string SetIfContains(Dictionary<string, object> pairs, string key, string defaults = "")
         {
             return pairs.ContainsKey(key)
                    ? pairs[key].ToString()
@@ -31,13 +23,13 @@ namespace Rasyidf.Localization
             var a = fileJson.FromJson<Dictionary<string, object>>();
             if (a == null) throw new FileFormatException("Json load failed");
 
-            var author = SetIfContains(a, "Author","Anonymous");
+            var author = SetIfContains(a, "Author", "Anonymous");
 
             bool IsSinglePack = false;
 
             if (a["Type"] is string)
             {
-                if (a["Type"].ToString().ToLower() == "single")
+                if (a["Type"].ToString().ToUpperInvariant() == "SINGLE")
                 {
                     IsSinglePack = true;
                 }
@@ -52,7 +44,7 @@ namespace Rasyidf.Localization
                     EnglishName = SetIfContains(a, "EnglishName"),
                     CultureName = SetIfContains(a, "CultureName"),
                     CultureId = SetIfContains(a, "Culture"),
-                    RTL = Convert.ToBoolean(SetIfContains(a, "RTL"))
+                    RTL = Convert.ToBoolean(SetIfContains(a, "RTL"), CultureInfo.InvariantCulture)
                 };
 
                 if (!(a["Data"] is List<object> data)) return;
@@ -71,9 +63,10 @@ namespace Rasyidf.Localization
 
                     tmp.Data.Add(node["Id"].ToString(), innerData);
                 }
-                
+
                 Packs.Add(tmp);
-            } else
+            }
+            else
             {
                 Dictionary<string, LocalizationDictionary> temps = new Dictionary<string, LocalizationDictionary>();
 
@@ -88,7 +81,7 @@ namespace Rasyidf.Localization
                         CultureName = SetIfContains(node, "CultureName"),
                         Author = author,
                         CultureId = SetIfContains(node, "Culture"),
-                        RTL = Convert.ToBoolean(SetIfContains(a, "RTL"))
+                        RTL = Convert.ToBoolean(SetIfContains(a, "RTL"), CultureInfo.InvariantCulture)
                     };
                     temps.Add(tmp.CultureId, tmp);
                 }
@@ -98,7 +91,7 @@ namespace Rasyidf.Localization
                 foreach (Dictionary<string, object> node in data)
                 {
                     if (node == null) continue;
-                    var innerData = new Dictionary<string,Dictionary<string, string>>();
+                    var innerData = new Dictionary<string, Dictionary<string, string>>();
                     foreach (var attribute in node)
                     {
                         if (attribute.Key == "id")
@@ -109,13 +102,13 @@ namespace Rasyidf.Localization
                         if (!(attribute.Value is List<object> child)) continue;
                         foreach (var item in child)
                         {
-                            if (item is Dictionary<string,string> dict)
+                            if (item is Dictionary<string, string> dict)
                             {
                                 foreach (var di in dict)
                                 {
-                                    innerData[di.Key][attribute.Key] = di.Value.ToString();
+                                    innerData[di.Key][attribute.Key] = di.Value.ToString(CultureInfo.InvariantCulture);
                                 }
-                            } 
+                            }
                         }
                     }
                     foreach (var item in innerData)
@@ -124,11 +117,10 @@ namespace Rasyidf.Localization
 
                         temps[item.Key].Data.Add(node["Id"].ToString(), item.Value);
                     }
-
                 }
                 foreach (var item in temps.Values)
                 {
-                    Packs.Add(item); 
+                    Packs.Add(item);
                 }
                 temps.Clear();
             }
@@ -136,9 +128,6 @@ namespace Rasyidf.Localization
 
         protected override void OnUnload()
         {
-
         }
-
-
     }
 }

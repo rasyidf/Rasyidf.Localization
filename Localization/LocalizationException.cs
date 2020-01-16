@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Rasyidf.Localization
+﻿namespace Rasyidf.Localization
 {
     [Serializable]
     public class LocalizationException : Exception
@@ -31,7 +23,7 @@ namespace Rasyidf.Localization
             LocalizationError = error;
         }
 
-        public LocalizationException(LocalizerError error )
+        public LocalizationException(LocalizerError error)
         {
             LocalizationError = error;
         }
@@ -39,6 +31,17 @@ namespace Rasyidf.Localization
         protected LocalizationException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
-         
+
+        public LocalizationException()
+        {
+        }
+
+        public LocalizationException(string message) : base(message)
+        {
+        }
+
+        public LocalizationException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }

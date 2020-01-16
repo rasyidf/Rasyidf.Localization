@@ -1,20 +1,16 @@
-﻿using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Windows.Data;
-using System.Windows.Markup.Localizer;
-namespace Rasyidf.Localization
+﻿namespace Rasyidf.Localization
 {
     /// <summary>
     /// Language Converter class for binding.
     /// </summary>
     public class LocalizationConverter : IValueConverter, IMultiValueConverter
     {
-        #region Fields 
-        string _uid;
-        readonly string _vid;
-        readonly object _defaultValue;
-        bool _isStaticUid;
+        #region Fields
+
+        private string _uid;
+        private readonly string _vid;
+        private readonly object _defaultValue;
+        private bool _isStaticUid;
 
         #endregion Fields
 
@@ -93,7 +89,7 @@ namespace Rasyidf.Localization
 
                 try
                 {
-                    translatedObject = string.Format(translatedObject.ToString(), parameters);
+                    translatedObject = string.Format(CultureInfo.InvariantCulture, translatedObject.ToString(), parameters);
                 }
                 catch (Exception)
                 {
@@ -102,18 +98,18 @@ namespace Rasyidf.Localization
                     Debug.WriteLine($"LocalizationConverter failed to format text {translatedObject.ToString()}");
 
                     #endregion Trace
+
                     throw new LocalizationException(LocalizerError.FormattingFailed);
                 }
                 return translatedObject;
             }
-            catch (Exception ex)
+            catch (LocalizationException ex)
             {
                 #region Trace
 
                 Debug.WriteLine($"LocalizationConverter failed to convert text: {ex.Message}");
 
                 #endregion Trace
-
             }
             return null;
         }
@@ -127,7 +123,7 @@ namespace Rasyidf.Localization
 
         #region Privates
 
-        static LocalizationDictionary ResolveDictionary()
+        private static LocalizationDictionary ResolveDictionary()
         {
             var dictionary = LocalizationDictionary.GetResources(LocalizationService.Current.Culture);
 

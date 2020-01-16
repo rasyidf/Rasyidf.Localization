@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
-
-namespace Rasyidf.Localization
+﻿namespace Rasyidf.Localization
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class LocalizationDictionary
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public static LocalizationDictionary Default () => new LocalizationDictionary()
+        public static LocalizationDictionary Default() => new LocalizationDictionary()
         {
             CultureName = CultureInfo.InstalledUICulture.NativeName,
             EnglishName = CultureInfo.InstalledUICulture.EnglishName,
@@ -22,15 +16,16 @@ namespace Rasyidf.Localization
             RTL = false,
             Author = "Anonymous"
         };
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public CultureInfo Culture => CultureInfo.GetCultureInfo(CultureId);
 
         #region Public Methods
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TValue"></typeparam>
         /// <param name="uid"></param>
@@ -40,8 +35,9 @@ namespace Rasyidf.Localization
         {
             return (TValue)Translate(uid, vid, null, typeof(TValue));
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TValue"></typeparam>
         /// <param name="uid"></param>
@@ -54,13 +50,14 @@ namespace Rasyidf.Localization
             {
                 return (TValue)Translate(uid, vid, defaultValue, typeof(TValue));
             }
-            catch (Exception)
+            catch (LocalizationException)
             {
                 return defaultValue;
             }
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="uid"></param>
         /// <param name="valueId"></param>
@@ -71,8 +68,9 @@ namespace Rasyidf.Localization
         {
             return OnTranslate(uid, valueId, defaultValue, type);
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="cultureInfo"></param>
         /// <returns></returns>
@@ -90,22 +88,27 @@ namespace Rasyidf.Localization
         }
 
         #endregion Public Methods
-         /// <summary>
-         /// 
-         /// </summary>
-        public string Version { get; set; }
+
         /// <summary>
-        /// 
+        ///
+        /// </summary>
+        public string Version { get; set; }
+
+        /// <summary>
+        ///
         /// </summary>
         public string CultureId { get; set; }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string CultureName { get; set; }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string EnglishName { get; set; }
+
         public bool RTL { get; set; }
         public string Author { get; set; }
 
@@ -128,7 +131,7 @@ namespace Rasyidf.Localization
             {
                 #region Trace
 
-                Debug.WriteLine(string.Format("Vid must not be null or empty"));
+                Debug.WriteLine("Vid must not be null or empty");
 
                 #endregion Trace
 
@@ -163,10 +166,8 @@ namespace Rasyidf.Localization
                 if (type == typeof(object))
                     return textValue;
 
-
                 return TypeDescriptor.GetConverter(type)
                                      .ConvertFromString(textValue);
-
             }
             catch (Exception ex)
             {
@@ -176,7 +177,7 @@ namespace Rasyidf.Localization
 
                 #endregion Trace
 
-                return defaultValue;
+                throw new LocalizationException(LocalizerError.Unknown);
             }
         }
     }

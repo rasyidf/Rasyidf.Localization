@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Markup;
-
-namespace Rasyidf.Localization
+﻿namespace Rasyidf.Localization
 {
     /// <summary>
     /// Localize Extension
@@ -15,18 +9,20 @@ namespace Rasyidf.Localization
     {
         #region Fields
 
-        DependencyProperty _property;
-        DependencyObject _target;
+        private DependencyProperty _property;
+        private DependencyObject _target;
 
         #endregion Fields
 
         #region Initialization
+
         /// <summary>
-        /// Constructor  
+        /// Constructor
         /// </summary>
         public Tr()
         {
         }
+
         /// <summary>
         /// Constructor with default value
         /// </summary>
@@ -39,50 +35,51 @@ namespace Rasyidf.Localization
         #endregion Initialization
 
         #region Properties
+
         /// <summary>
-        /// Get or set the default value 
+        /// Get or set the default value
         /// </summary>
         public object Default { get; set; }
+
         /// <summary>
         /// Get or set the Unique Identifier
         /// </summary>
         public string Uid { get; set; }
+
         /// <summary>
         /// Parameters Collection
         /// </summary>
         public Collection<BindingBase> Parameters { get; } = new Collection<BindingBase>();
 
         #region UidProperty DProperty
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="instance"></param>
         /// <returns></returns>
-        public static string GetUid(DependencyObject obj)
+        public static string GetUid(DependencyObject instance)
         {
-            if (obj is null)
+            if (instance is null)
             {
-                throw new ArgumentNullException(nameof(obj));
+                throw new ArgumentNullException(nameof(instance));
             }
 
-            return (string)obj.GetValue(UidProperty);
+            return (string)instance.GetValue(UidProperty);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="value"></param>
-        public static void SetUid(DependencyObject obj, string value)
+
+        public static void SetUid(DependencyObject instance, string value)
         {
-            if (obj is null)
+            if (instance is null)
             {
-                throw new ArgumentNullException(nameof(obj));
+                throw new ArgumentNullException(nameof(instance));
             }
 
-            obj.SetValue(UidProperty, value);
+            instance.SetValue(UidProperty, value);
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static readonly DependencyProperty UidProperty =
             DependencyProperty.RegisterAttached("Uid", typeof(string), typeof(Tr), new UIPropertyMetadata(string.Empty));
@@ -92,8 +89,9 @@ namespace Rasyidf.Localization
         #endregion Properties
 
         #region Overrides
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="serviceProvider"></param>
         /// <returns></returns>
@@ -108,7 +106,7 @@ namespace Rasyidf.Localization
             {
                 return this;
             }
-            
+
             if (!(service.TargetProperty is DependencyProperty property) || !(service.TargetObject is DependencyObject target))
             {
                 return this;
@@ -124,7 +122,7 @@ namespace Rasyidf.Localization
 
         #region Privates
 
-        object BindDictionary(IServiceProvider serviceProvider)
+        private object BindDictionary(IServiceProvider serviceProvider)
         {
             var uid = Uid ?? GetUid(_target);
             var vid = _property.Name;
@@ -156,7 +154,7 @@ namespace Rasyidf.Localization
 
             foreach (var i in Parameters)
             {
-                var bindingBase = (Binding) i;
+                var bindingBase = (Binding)i;
                 multiBinding.Bindings.Add(bindingBase);
             }
 
