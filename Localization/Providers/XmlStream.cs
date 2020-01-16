@@ -1,4 +1,8 @@
-﻿namespace Rasyidf.Localization
+﻿using System.Collections.Generic;
+using System.Xml;
+using System;
+using System.IO;
+namespace Rasyidf.Localization
 {
     public class XmlStream : StreamBase
     {

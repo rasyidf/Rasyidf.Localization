@@ -1,4 +1,10 @@
-﻿namespace Rasyidf.Localization
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Markup;
+
+namespace Rasyidf.Localization
 {
     /// <summary>
     /// Localize Extension

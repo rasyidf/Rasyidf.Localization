@@ -1,4 +1,9 @@
-﻿namespace Rasyidf.Localization
+﻿using System.Collections;
+using System;
+using System.Globalization;
+using System.Runtime.Serialization;
+
+namespace Rasyidf.Localization
 {
     [Serializable]
     public class LocalizationException : Exception

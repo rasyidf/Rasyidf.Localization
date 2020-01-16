@@ -1,4 +1,9 @@
-﻿namespace Rasyidf.Localization
+﻿using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.Windows.Data;
+
+namespace Rasyidf.Localization
 {
     /// <summary>
     /// Language Converter class for binding.

@@ -1,4 +1,13 @@
-﻿namespace Rasyidf.Localization
+﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
+using System.Threading;
+using System.Linq;
+using System.Diagnostics;
+
+namespace Rasyidf.Localization
 {
     /// <summary>
     /// Language Service Across Sessions

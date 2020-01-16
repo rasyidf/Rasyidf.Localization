@@ -1,4 +1,10 @@
-﻿namespace Rasyidf.Localization
+﻿using System.Collections.Generic;
+using System;
+using System.IO;
+using System.Globalization;
+using System.Diagnostics;
+
+namespace Rasyidf.Localization
 {
     public class JsonStream : StreamBase
     {

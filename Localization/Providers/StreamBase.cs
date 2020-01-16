@@ -1,4 +1,8 @@
-﻿namespace Rasyidf.Localization
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+
+namespace Rasyidf.Localization
 {
     /// <summary>
     /// Base class for Language Pack Stream

@@ -1,4 +1,12 @@
-﻿namespace Rasyidf.Localization
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Text;
+
+namespace Rasyidf.Localization
 {
     public static class JsonParser
     {
@@ -239,11 +247,8 @@
             }
             if (json[0] == '[' && json[jsonLength - 1] == ']')
             {
-                var items = Split(json);
-                var finalList = new List<object>(items.Count);
-                finalList.AddRange(items.Select(ParseAnonymousValue));
-
-                return finalList;
+                var items = Split(json);  
+                return items.Select(ParseAnonymousValue).ToList<object>();  
             }
             if (json[0] == '\"' && json[jsonLength - 1] == '\"')
             {
