@@ -29,7 +29,7 @@ namespace Rasyidf.Localization
                 throw new XmlException("Invalid root element. Must be Pack");
             }
 
-            var tmp = new LanguageItem()
+            var tmp = new LocalizationDictionary()
             {
                 Version = docElement.Attributes["Version"]?.Value,
                 Author = docElement.Attributes["Author"]?.Value, 

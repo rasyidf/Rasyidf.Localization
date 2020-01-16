@@ -60,6 +60,11 @@ namespace Rasyidf.Localization
         /// <returns></returns>
         public static string GetUid(DependencyObject obj)
         {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
             return (string)obj.GetValue(UidProperty);
         }
         /// <summary>
@@ -69,6 +74,11 @@ namespace Rasyidf.Localization
         /// <param name="value"></param>
         public static void SetUid(DependencyObject obj, string value)
         {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
             obj.SetValue(UidProperty, value);
         }
         /// <summary>
@@ -89,6 +99,11 @@ namespace Rasyidf.Localization
         /// <returns></returns>
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
+            if (serviceProvider is null)
+            {
+                throw new ArgumentNullException(nameof(serviceProvider));
+            }
+
             if (!(serviceProvider.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget service))
             {
                 return this;
@@ -116,11 +131,11 @@ namespace Rasyidf.Localization
 
             var binding = new Binding("LanguagePack")
             {
-                Source = LanguageService.Current,
+                Source = LocalizationService.Current,
                 Mode = BindingMode.TwoWay
             };
 
-            var converter = new LanguageConverter(uid, vid, Default);
+            var converter = new LocalizationConverter(uid, vid, Default);
             if (Parameters.Count == 0)
             {
                 binding.Converter = converter;

@@ -13,13 +13,13 @@ namespace Rasyidf.Localization
     /// <summary>
     /// Language Service Across Sessions
     /// </summary>
-    public class LanguageService : INotifyPropertyChanged
+    public class LocalizationService : INotifyPropertyChanged
     {
         
         #region Fields
 
         CultureInfo _cultureInfo;
-        LanguageItem _pack;
+        LocalizationDictionary _pack;
 
         #endregion Fields
 
@@ -47,7 +47,7 @@ namespace Rasyidf.Localization
 
                 Thread.CurrentThread.CurrentUICulture = _cultureInfo;
 
-                var newDictionary = LanguageItem.GetResources(_cultureInfo);
+                var newDictionary = LocalizationDictionary.GetResources(_cultureInfo);
 
                 LanguagePack = newDictionary;
                 OnPropertyChanged(nameof(Culture));
@@ -57,12 +57,12 @@ namespace Rasyidf.Localization
         /// <summary>
         /// 
         /// </summary>
-        public static Dictionary<CultureInfo, LanguageItem> RegisteredPacks { get; } = new Dictionary<CultureInfo, LanguageItem>();
+        public static Dictionary<CultureInfo, LocalizationDictionary> RegisteredPacks { get; } = new Dictionary<CultureInfo, LocalizationDictionary>();
         
         /// <summary>
         /// 
         /// </summary>
-        public LanguageItem LanguagePack
+        public LocalizationDictionary LanguagePack
         {
             get => _pack;
             set
@@ -79,7 +79,7 @@ namespace Rasyidf.Localization
         /// <summary>
         /// 
         /// </summary>
-        public static LanguageService Current { get; } = new LanguageService();
+        public static LocalizationService Current { get; } = new LocalizationService();
 
         /// <summary>
         /// Initialize Language Service
@@ -147,6 +147,11 @@ namespace Rasyidf.Localization
         /// <returns></returns>
         public static IEnumerable<FileInfo> GetFilesByExtensions(DirectoryInfo directory, params string[] extensions)
         {
+            if (directory is null)
+            {
+                throw new ArgumentNullException(nameof(directory));
+            }
+
             var allowedExtensions = new HashSet<string>(extensions, StringComparer.OrdinalIgnoreCase);
             return directory.EnumerateFiles().Where(f => allowedExtensions.Contains(f.Extension));
         }
@@ -155,11 +160,11 @@ namespace Rasyidf.Localization
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public void ChangeLanguage(LanguageItem value)
+        public void ChangeLanguage(LocalizationDictionary value)
         {
-            _cultureInfo = value.Culture;
+            _cultureInfo = value?.Culture ?? throw new ArgumentNullException(nameof(value));
             Thread.CurrentThread.CurrentUICulture = _cultureInfo;
-            LanguagePack = value;
+            LanguagePack = value ?? throw new ArgumentNullException(nameof(value));
             OnPropertyChanged(nameof(Culture));
         }
          /// <summary>
@@ -192,8 +197,13 @@ namespace Rasyidf.Localization
         /// <returns>Return Localized string</returns>
         public static string Localize(this string self, string @default = "", char separator =',')
         {
+            if (string.IsNullOrEmpty(self))
+            {
+                return "";
+            }
+
             var val = self.Split(separator);
-            return LanguageService.GetString(val[0], val[1], @default);
+            return LocalizationService.GetString(val[0], val[1], @default);
         }
     }
 

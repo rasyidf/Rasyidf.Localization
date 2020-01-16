@@ -9,12 +9,12 @@ namespace Rasyidf.Localization
     /// <summary>
     /// 
     /// </summary>
-    public class LanguageItem
+    public class LocalizationDictionary
     {
         /// <summary>
         /// 
         /// </summary>
-        public static LanguageItem Default = new LanguageItem()
+        public static LocalizationDictionary Default () => new LocalizationDictionary()
         {
             CultureName = CultureInfo.InstalledUICulture.NativeName,
             EnglishName = CultureInfo.InstalledUICulture.EnglishName,
@@ -76,16 +76,16 @@ namespace Rasyidf.Localization
         /// </summary>
         /// <param name="cultureInfo"></param>
         /// <returns></returns>
-        public static LanguageItem GetResources(CultureInfo cultureInfo)
+        public static LocalizationDictionary GetResources(CultureInfo cultureInfo)
         {
             if (cultureInfo is null)
             {
                 throw new ArgumentNullException(nameof(cultureInfo));
             }
 
-            if (!LanguageService.RegisteredPacks.ContainsKey(cultureInfo)) return Default;
+            if (!LocalizationService.RegisteredPacks.ContainsKey(cultureInfo)) return Default();
 
-            LanguageItem dictionary = LanguageService.RegisteredPacks[cultureInfo];
+            LocalizationDictionary dictionary = LocalizationService.RegisteredPacks[cultureInfo];
             return dictionary;
         }
 

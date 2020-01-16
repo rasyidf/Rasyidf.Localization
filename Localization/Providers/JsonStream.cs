@@ -45,7 +45,7 @@ namespace Rasyidf.Localization
 
             if (IsSinglePack)
             {
-                var tmp = new LanguageItem()
+                var tmp = new LocalizationDictionary()
                 {
                     Version = SetIfContains(a, "Version"),
                     Author = author,
@@ -75,14 +75,14 @@ namespace Rasyidf.Localization
                 Packs.Add(tmp);
             } else
             {
-                Dictionary<string, LanguageItem> temps = new Dictionary<string, LanguageItem>();
+                Dictionary<string, LocalizationDictionary> temps = new Dictionary<string, LocalizationDictionary>();
 
                 if (!(a["Languages"] is List<object> langs)) return;
 
                 foreach (Dictionary<string, object> node in langs)
                 {
                     if (node == null) continue;
-                    var tmp = new LanguageItem()
+                    var tmp = new LocalizationDictionary()
                     {
                         EnglishName = SetIfContains(node, "EnglishName"),
                         CultureName = SetIfContains(node, "CultureName"),

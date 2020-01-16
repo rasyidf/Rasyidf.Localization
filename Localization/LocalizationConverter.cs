@@ -2,16 +2,15 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
-
+using System.Windows.Markup.Localizer;
 namespace Rasyidf.Localization
 {
     /// <summary>
     /// Language Converter class for binding.
     /// </summary>
-    public class LanguageConverter : IValueConverter, IMultiValueConverter
+    public class LocalizationConverter : IValueConverter, IMultiValueConverter
     {
-        #region Fields
-
+        #region Fields 
         string _uid;
         readonly string _vid;
         readonly object _defaultValue;
@@ -21,7 +20,7 @@ namespace Rasyidf.Localization
 
         #region Initialization
 
-        public LanguageConverter(string uid, string vid, object defaultValue)
+        public LocalizationConverter(string uid, string vid, object defaultValue)
         {
             _uid = uid;
             _vid = vid;
@@ -51,6 +50,26 @@ namespace Rasyidf.Localization
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            if (values is null)
+            {
+                throw new ArgumentNullException(nameof(values));
+            }
+
+            if (targetType is null)
+            {
+                throw new ArgumentNullException(nameof(targetType));
+            }
+
+            if (parameter is null)
+            {
+                throw new ArgumentNullException(nameof(parameter));
+            }
+
+            if (culture is null)
+            {
+                throw new ArgumentNullException(nameof(culture));
+            }
+
             try
             {
                 var parametersCount = _isStaticUid ? values.Length - 1 : values.Length - 2;
@@ -64,7 +83,7 @@ namespace Rasyidf.Localization
                     _uid = values[1].ToString();
                     --parametersCount;
                 }
-                LanguageItem dictionary = ResolveDictionary();
+                LocalizationDictionary dictionary = ResolveDictionary();
                 var translatedObject = dictionary.Translate(_uid, _vid, _defaultValue, targetType);
 
                 if (translatedObject == null || parametersCount == 0) return translatedObject;
@@ -80,9 +99,10 @@ namespace Rasyidf.Localization
                 {
                     #region Trace
 
-                    Debug.WriteLine($"LanguageConverter failed to format text {translatedObject.ToString()}");
+                    Debug.WriteLine($"LocalizationConverter failed to format text {translatedObject.ToString()}");
 
                     #endregion Trace
+                    throw new LocalizationException(LocalizerError.FormattingFailed);
                 }
                 return translatedObject;
             }
@@ -90,9 +110,10 @@ namespace Rasyidf.Localization
             {
                 #region Trace
 
-                Debug.WriteLine($"LanguageConverter failed to convert text: {ex.Message}");
+                Debug.WriteLine($"LocalizationConverter failed to convert text: {ex.Message}");
 
                 #endregion Trace
+
             }
             return null;
         }
@@ -106,14 +127,14 @@ namespace Rasyidf.Localization
 
         #region Privates
 
-        static LanguageItem ResolveDictionary()
+        static LocalizationDictionary ResolveDictionary()
         {
-            var dictionary = LanguageItem.GetResources(LanguageService.Current.Culture);
+            var dictionary = LocalizationDictionary.GetResources(LocalizationService.Current.Culture);
 
             if (dictionary is null)
             {
                 throw new InvalidOperationException(
-                    $"Pack for language {LanguageService.Current.Culture} was not found");
+                    $"Pack for language {LocalizationService.Current.Culture} was not found");
             }
 
             return dictionary;
