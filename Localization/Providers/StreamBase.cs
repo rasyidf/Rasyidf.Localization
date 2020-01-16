@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 
 namespace Rasyidf.Localization
@@ -20,24 +17,25 @@ namespace Rasyidf.Localization
         /// <summary>
         /// Language Packages
         /// </summary>
-        public Collection<LanguageItem> Packs { get; set; }
+        public Collection<LocalizationDictionary> Packs { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsLoaded { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public void Load()
         {
-            Packs = new Collection<LanguageItem>();
+            Packs = new Collection<LocalizationDictionary>();
             OnLoad();
             IsLoaded = true;
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public void Unload()
         {
@@ -45,74 +43,94 @@ namespace Rasyidf.Localization
             Packs = null;
             IsLoaded = false;
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="item"></param>
-        public static void RegisterPack(LanguageItem item)
+        public static void RegisterPack(LocalizationDictionary item)
         {
-            if (LanguageService.RegisteredPacks.ContainsKey(item.Culture))
+            if (item is null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            if (LocalizationService.RegisteredPacks.ContainsKey(item.Culture))
             {
                 return;
             }
 
-            LanguageService.RegisteredPacks.Add(item.Culture, item);
+            LocalizationService.RegisteredPacks.Add(item.Culture, item);
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dictionary"></param>
         public static void RegisterPacks(StreamBase dictionary)
         {
-            foreach (LanguageItem item in dictionary.Packs)
+            if (dictionary is null)
             {
-                if (LanguageService.RegisteredPacks.ContainsKey(item.Culture))
+                throw new ArgumentNullException(nameof(dictionary));
+            }
+
+            for (int i = 0; i < dictionary.Packs.Count; i++)
+            {
+                LocalizationDictionary item = dictionary.Packs[i];
+                if (LocalizationService.RegisteredPacks.ContainsKey(item.Culture))
                 {
                     continue;
                 }
 
-                LanguageService.RegisteredPacks.Add(item.Culture, item);
+                LocalizationService.RegisteredPacks.Add(item.Culture, item);
             }
-
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="cultureInfo"></param>
         public static void UnregisterPack(CultureInfo cultureInfo)
         {
-            if (!LanguageService.RegisteredPacks.ContainsKey(cultureInfo))
+            if (!LocalizationService.RegisteredPacks.ContainsKey(cultureInfo))
             {
                 return;
             }
-            LanguageService.RegisteredPacks.Remove(cultureInfo);
+            LocalizationService.RegisteredPacks.Remove(cultureInfo);
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="cultureInfo"></param>
         public static void UnregisterPacks(CultureInfo[] cultureInfo)
         {
+            if (cultureInfo is null)
+            {
+                throw new ArgumentNullException(nameof(cultureInfo));
+            }
+
             foreach (CultureInfo item in cultureInfo)
             {
-                if (!LanguageService.RegisteredPacks.ContainsKey(item))
+                if (!LocalizationService.RegisteredPacks.ContainsKey(item))
                 {
                     return;
                 }
-                LanguageService.RegisteredPacks.Remove(item);
+                LocalizationService.RegisteredPacks.Remove(item);
             }
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected abstract void OnLoad();
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected abstract void OnUnload();
-
-
     }
+
     /// <summary>
     /// Null Stream
     /// </summary>
@@ -123,7 +141,6 @@ namespace Rasyidf.Localization
         /// </summary>
         protected override void OnLoad()
         {
-
         }
 
         /// <summary>
@@ -131,7 +148,6 @@ namespace Rasyidf.Localization
         /// </summary>
         protected override void OnUnload()
         {
-
         }
     }
 }

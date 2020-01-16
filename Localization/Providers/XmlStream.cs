@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Xml;
-
+using System;
+using System.IO;
 namespace Rasyidf.Localization
 {
     public class XmlStream : StreamBase
-    { 
+    {
         public XmlStream(string path)
         {
             if (File.Exists(path))
@@ -17,8 +16,12 @@ namespace Rasyidf.Localization
 
         protected override void OnLoad()
         {
-            var xmlDocument = new XmlDocument();
-            xmlDocument.Load(Path);
+            var xmlDocument = new XmlDocument() { XmlResolver = null };
+            using (var sreader = new StringReader(Path))
+            using (var reader = XmlReader.Create(sreader, new XmlReaderSettings() { XmlResolver = null, Async = true }))
+            {
+                xmlDocument.Load(reader);
+            }
 
             var docElement = xmlDocument.DocumentElement;
 
@@ -29,10 +32,10 @@ namespace Rasyidf.Localization
                 throw new XmlException("Invalid root element. Must be Pack");
             }
 
-            var tmp = new LanguageItem()
+            var tmp = new LocalizationDictionary()
             {
                 Version = docElement.Attributes["Version"]?.Value,
-                Author = docElement.Attributes["Author"]?.Value, 
+                Author = docElement.Attributes["Author"]?.Value,
                 EnglishName = docElement.Attributes["EnglishName"]?.Value,
                 CultureName = docElement.Attributes["CultureName"]?.Value,
                 CultureId = docElement.Attributes["Culture"]?.Value,
@@ -59,16 +62,12 @@ namespace Rasyidf.Localization
                         innerData[attribute.Name] = attribute.Value;
                     }
                 }
-
             }
             Packs.Add(tmp);
         }
 
         protected override void OnUnload()
         {
-             
         }
-
-
     }
 }

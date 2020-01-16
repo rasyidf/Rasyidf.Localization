@@ -10,14 +10,14 @@ namespace Rasyidf.Localization
 {
     public static class JsonParser
     {
-        static readonly Stack<List<string>> splitArrayPool = new Stack<List<string>>();
-        static readonly StringBuilder stringBuilder = new StringBuilder();
-        static readonly Dictionary<Type, Dictionary<string, FieldInfo>> FieldInfoCache = new Dictionary<Type, Dictionary<string, FieldInfo>>();
-        static readonly Dictionary<Type, Dictionary<string, PropertyInfo>> PropertyInfoCache = new Dictionary<Type, Dictionary<string, PropertyInfo>>();
+        private static readonly Stack<List<string>> splitArrayPool = new Stack<List<string>>();
+        private static readonly StringBuilder stringBuilder = new StringBuilder();
+        private static readonly Dictionary<Type, Dictionary<string, FieldInfo>> FieldInfoCache = new Dictionary<Type, Dictionary<string, FieldInfo>>();
+        private static readonly Dictionary<Type, Dictionary<string, PropertyInfo>> PropertyInfoCache = new Dictionary<Type, Dictionary<string, PropertyInfo>>();
 
         public static T FromJson<T>(this string json)
         {
-            if (string.IsNullOrEmpty(json)) return (T)ParseValue(typeof(T), ""); 
+            if (string.IsNullOrEmpty(json)) return (T)ParseValue(typeof(T), "");
             stringBuilder.Clear();
             for (var i = 0; i < json.Length; i++)
             {
@@ -33,11 +33,10 @@ namespace Rasyidf.Localization
                 stringBuilder.Append(c);
             }
 
-
             return (T)ParseValue(typeof(T), stringBuilder.ToString());
         }
 
-        static int AppendUntilStringEnd(bool appendEscapeCharacter, int startIdx, string json)
+        private static int AppendUntilStringEnd(bool appendEscapeCharacter, int startIdx, string json)
         {
             stringBuilder.Append(json[startIdx]);
             for (var i = startIdx + 1; i < json.Length; i++)
@@ -45,16 +44,17 @@ namespace Rasyidf.Localization
                 switch (json[i])
                 {
                     case '\\':
-                    {
-                        if (appendEscapeCharacter)
-                            stringBuilder.Append(json[i]);
-                        stringBuilder.Append(json[i + 1]);
-                        i++; 
-                        break;
-                    }
+                        {
+                            if (appendEscapeCharacter)
+                                stringBuilder.Append(json[i]);
+                            stringBuilder.Append(json[i + 1]);
+                            i++;
+                            break;
+                        }
                     case '\"':
                         stringBuilder.Append(json[i]);
                         return i;
+
                     default:
                         stringBuilder.Append(json[i]);
                         break;
@@ -64,7 +64,7 @@ namespace Rasyidf.Localization
         }
 
         //Splits { <value>:<value>, <value>:<value> } and [ <value>, <value> ] into a list of <value> strings
-        static List<string> Split(string json)
+        private static List<string> Split(string json)
         {
             var splitArray = splitArrayPool.Count > 0 ? splitArrayPool.Pop() : new List<string>();
             splitArray.Clear();
@@ -78,7 +78,7 @@ namespace Rasyidf.Localization
                 switch (json[i])
                 {
                     case '[':
-                    case '{': 
+                    case '{':
                         parseDepth++;
                         break;
 
@@ -98,11 +98,10 @@ namespace Rasyidf.Localization
                             stringBuilder.Length = 0;
                             continue;
                         }
-                        break; 
+                        break;
                 }
 
                 stringBuilder.Append(json[i]);
-
             }
             splitArray.Add(stringBuilder.ToString());
             return splitArray;
@@ -124,24 +123,23 @@ namespace Rasyidf.Localization
             }
             if (type == typeof(int))
             {
-                int.TryParse(json, out var result);
+                _ = int.TryParse(json, out var result);
                 return result;
             }
             if (type == typeof(float))
             {
-                float.TryParse(json, out var result);
+                _ = float.TryParse(json, out var result);
                 return result;
             }
             if (type == typeof(double))
             {
-                double.TryParse(json, out var result);
+                _ = double.TryParse(json, out var result);
                 return result;
             }
             if (type == typeof(bool))
             {
-                return json.ToLower() == "true";
+                return json.ToUpperInvariant() == "TRUE";
             }
-
 
             if (type.IsArray)
             {
@@ -221,9 +219,8 @@ namespace Rasyidf.Localization
             return null;
         }
 
-        static object ParseAnonymousValue(string json)
+        private static object ParseAnonymousValue(string json)
         {
-
             var jsonLength = json.Length;
 
             if (jsonLength == 0)
@@ -233,6 +230,7 @@ namespace Rasyidf.Localization
             {
                 case "true":
                     return true;
+
                 case "false":
                     return false;
             }
@@ -246,15 +244,11 @@ namespace Rasyidf.Localization
                 for (var i = 0; i < elems.Count; i += 2)
                     dict.Add(elems[i].Substring(1, elems[i].Length - 2), ParseAnonymousValue(elems[i + 1]));
                 return dict;
-
             }
             if (json[0] == '[' && json[jsonLength - 1] == ']')
             {
-                var items = Split(json);
-                var finalList = new List<object>(items.Count);
-                finalList.AddRange(items.Select(ParseAnonymousValue));
-
-                return finalList;
+                var items = Split(json);  
+                return items.Select(ParseAnonymousValue).ToList<object>();  
             }
             if (json[0] == '\"' && json[jsonLength - 1] == '\"')
             {
@@ -265,17 +259,18 @@ namespace Rasyidf.Localization
 
             if (json.Contains("."))
             {
-                double.TryParse(json, out var value);
-                return value;
+                if (double.TryParse(json, out var value))
+                    return value;
             }
 
-            int.TryParse(json, out var valueInt);
-            return valueInt;
+            if (int.TryParse(json, out var valueInt))
+                return valueInt;
 
             // handles json == "null" as well as invalid JSON
+            return null;
         }
 
-        static object ParseObject(Type type, string json)
+        private static object ParseObject(Type type, string json)
         {
             var instance = FormatterServices.GetUninitializedObject(type);
 
