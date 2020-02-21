@@ -17,8 +17,7 @@ namespace Rasyidf.Localization
         protected override void OnLoad()
         {
             var xmlDocument = new XmlDocument() { XmlResolver = null };
-            using (var sreader = new StringReader(Path))
-            using (var reader = XmlReader.Create(sreader, new XmlReaderSettings() { XmlResolver = null, Async = true }))
+            using (var reader = XmlReader.Create(Path, new XmlReaderSettings() { XmlResolver = null, Async = true }))
             {
                 xmlDocument.Load(reader);
             }

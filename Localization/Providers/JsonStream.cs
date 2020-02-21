@@ -50,7 +50,7 @@ namespace Rasyidf.Localization
                     EnglishName = SetIfContains(a, "EnglishName"),
                     CultureName = SetIfContains(a, "CultureName"),
                     CultureId = SetIfContains(a, "Culture"),
-                    RTL = Convert.ToBoolean(SetIfContains(a, "RTL"), CultureInfo.InvariantCulture)
+                    RTL = Convert.ToBoolean(SetIfContains(a, "RTL", "False"), CultureInfo.InvariantCulture)
                 };
 
                 if (!(a["Data"] is List<object> data)) return;
@@ -87,7 +87,7 @@ namespace Rasyidf.Localization
                         CultureName = SetIfContains(node, "CultureName"),
                         Author = author,
                         CultureId = SetIfContains(node, "Culture"),
-                        RTL = Convert.ToBoolean(SetIfContains(a, "RTL"), CultureInfo.InvariantCulture)
+                        RTL = Convert.ToBoolean(SetIfContains(a, "RTL", "False"), CultureInfo.InvariantCulture)
                     };
                     temps.Add(tmp.CultureId, tmp);
                 }
