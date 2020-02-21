@@ -23,7 +23,7 @@
     <PackageTags>Localization, MultiLanguage, WpfLocalization, CSharp, Internationalization, WPF, Globalization, i18n, l12n</PackageTags> 
     <NeutralLanguage>en-US</NeutralLanguage> 
     <UserSecretsId>f08138ee-0f47-42b4-ae48-d6030f52552d</UserSecretsId> 
-    <SignAssembly>true</SignAssembly> 
+    <SignAssembly>false</SignAssembly> 
     <AssemblyOriginatorKeyFile>rasyidf.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup> 
   
