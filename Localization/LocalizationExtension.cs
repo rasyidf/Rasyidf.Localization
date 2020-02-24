@@ -51,6 +51,8 @@ namespace Rasyidf.Localization
         /// Get or set the Unique Identifier
         /// </summary>
         public string Uid { get; set; }
+        
+        public string Vid { get; set; }
 
         /// <summary>
         /// Parameters Collection
@@ -92,6 +94,26 @@ namespace Rasyidf.Localization
 
         #endregion UidProperty DProperty
 
+        #region VidProperty DProperty
+
+        public static readonly DependencyProperty VidProperty = DependencyProperty.RegisterAttached(
+            "Vid", typeof(string), typeof(Tr), new PropertyMetadata(default(string)));
+
+        public static void SetVid(DependencyObject element, string value) {
+            if (element == null) {
+                throw new ArgumentNullException(nameof(element));
+            }
+            element.SetValue(VidProperty, value);
+        }
+
+        public static string GetVid(DependencyObject element) {
+            if (element == null) {
+                throw new ArgumentNullException(nameof(element));
+            }
+            return (string) element.GetValue(VidProperty);
+        }
+        #endregion
+
         #endregion Properties
 
         #region Overrides
@@ -131,7 +153,7 @@ namespace Rasyidf.Localization
         private object BindDictionary(IServiceProvider serviceProvider)
         {
             var uid = Uid ?? GetUid(_target);
-            var vid = _property.Name;
+            var vid = string.IsNullOrEmpty(Vid ?? GetVid(_target)) ? _property.Name : Vid ?? GetVid(_target);
 
             var binding = new Binding("LanguagePack")
             {
