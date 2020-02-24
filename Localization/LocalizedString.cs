@@ -49,6 +49,8 @@ namespace Rasyidf.Localization {
             Initialize();
         }
 
+        public LocalizedString(string @default) : this("", "", @default) { }
+
         private void Initialize() {
             ReloadLocalization();
             LocalizationService.Current.PropertyChanged += (sender, args) => ReloadLocalization();
@@ -75,6 +77,10 @@ namespace Rasyidf.Localization {
 
         public static implicit operator string(LocalizedString s) {
             return s.Value;
+        }
+
+        public static implicit operator LocalizedString(string s) {
+            return new LocalizedString(s);
         }
 
         private string DebuggerDisplay => $"Loc: {Uid}.{Vid} - {Default}\n{Value}";
