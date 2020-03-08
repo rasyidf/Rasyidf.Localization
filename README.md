@@ -145,6 +145,11 @@ All Done :)
 
 ## What is new
 
+0.5.2
+* Now rf:Tr will automatically find Uid and Property name based on markup.
+* Fixed json stream error when loading metadata. 
+* Recreate Demo.WPF because of corrupted file.
+
 0.5.0
 * Translation string extension use `"UID, VID".Translate()` to get localized string.
 * Multiple Language pack in single file.
@@ -152,6 +157,7 @@ All Done :)
 
 0.4.0
 * Raw support for xml
+* initial json support
 
 ## Authors
 
