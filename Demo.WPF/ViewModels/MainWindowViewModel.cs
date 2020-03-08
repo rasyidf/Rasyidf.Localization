@@ -1,15 +1,18 @@
-﻿using Rasyidf.Localization;
+﻿using Demo.WPF.Helpers;
+using Rasyidf.Localization;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Localization.Demo
+namespace Demo.WPF.ViewModels
 {
-    internal class MainWindowViewModel : INotifyPropertyChanged
+    class MainWindowViewModel : Observable
     {
-
         public MainWindowViewModel()
         {
             var a = LocalizationService.RegisteredPacks;
@@ -18,49 +21,44 @@ namespace Localization.Demo
             {
                 var pack = LocalizationDictionary.GetResources(culture);
                 Cultures.Add(pack);
-                CultureMenus.Add(new MenuItem() { Header= $"{pack.EnglishName} ({pack.CultureName})", Tag = pack });
+                CultureMenus.Add(new MenuItem() { Header = $"{pack.EnglishName} ({pack.CultureName})", Tag = pack });
             }
         }
 
         private RelayCommand<LocalizationDictionary> _changeLanguageCommand;
         public RelayCommand<LocalizationDictionary> ChangeLanguageCommand => _changeLanguageCommand ?? (_changeLanguageCommand = new RelayCommand<LocalizationDictionary>(ChangeLanguage));
-        
+
         private RelayCommand _showMessageCommand;
         public RelayCommand ShowMessageCommand => _showMessageCommand ?? (_showMessageCommand = new RelayCommand(ShowMessage));
 
-        private void ShowMessage(object obj)
+        private void ShowMessage()
         {
-            MessageBox.Show(Application.Current.MainWindow,"511,Text".Localize() ,LocalizationService.GetString("511", "Header","Header"));
+            MessageBox.Show(Application.Current.MainWindow,
+                            "511,Text".Localize(),
+                            LocalizationService.GetString("511", "Header", "Header"));
         }
 
         private void ChangeLanguage(LocalizationDictionary value)
         {
             if (value != null)
             {
-                LocalizationService.Current.ChangeLanguage(value);
-                OnPropertyChanged(nameof(SelectedPack));
+                LocalizationService.Current.ChangeLanguage(value); 
             }
         }
 
         private ObservableCollection<LocalizationDictionary> _cultures = new ObservableCollection<LocalizationDictionary>();
         private LocalizationDictionary _selectedPack;
-        private ObservableCollection<MenuItem> _cultureMenus = new ObservableCollection<MenuItem>();
-
+        private ObservableCollection<MenuItem> _cultureMenus = new ObservableCollection<MenuItem>(); 
         public ObservableCollection<LocalizationDictionary> Cultures
         {
             get => _cultures; set
-            {
-                _cultures = value;
-                OnPropertyChanged(nameof(Cultures));
+            { 
+                Set(ref _cultures,value);
             }
         }
-          public ObservableCollection<MenuItem> CultureMenus
+        public ObservableCollection<MenuItem> CultureMenus
         {
-            get => _cultureMenus; set
-            {
-                _cultureMenus = value;
-                OnPropertyChanged(nameof(CultureMenus));
-            }
+            get => _cultureMenus; set => Set(ref _cultureMenus, value);
         }
         public int LanguageCount => Cultures.Count;
 
@@ -69,17 +67,10 @@ namespace Localization.Demo
             get => _selectedPack;
             set
             {
-                _selectedPack = value;
+                Set(ref _selectedPack, value);
                 LocalizationService.Current.ChangeLanguage(value);
-                OnPropertyChanged(nameof(SelectedPack));
             }
         }
 
-        private void OnPropertyChanged(string property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

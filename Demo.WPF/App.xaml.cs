@@ -1,8 +1,13 @@
 ﻿using Rasyidf.Localization;
-
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
-namespace Localization.Demo
+namespace Demo.WPF
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -11,13 +16,10 @@ namespace Localization.Demo
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+
             base.OnStartup(e);
-            LocalizationService.Current.Initialize();  
+            LocalizationService.Current.Initialize();
 
-        }
-
-        void Application_Startup(object sender, StartupEventArgs e)
-        {
         }
     }
 }

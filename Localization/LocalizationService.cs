@@ -84,7 +84,7 @@ namespace Rasyidf.Localization
         /// </summary>
         /// <param name="path"></param>
         /// <param name="default"></param>
-        public void Initialize(string path = "Languages", string @default = "en-us")
+        public void Initialize(string path = "Assets", string @default = "en-us")
         {
             if (path != null)
             {
@@ -112,7 +112,7 @@ namespace Rasyidf.Localization
         {
             if (!Directory.Exists(path))
             {
-                Debug.Print("Path doesn't exist");
+                Debug.Print($"Path {path} doesn't exist");
                 return;
             }
 
@@ -123,15 +123,17 @@ namespace Rasyidf.Localization
             foreach (var t in files)
             {
                 var filepath = path + @"\" + t.Name;
-                StreamBase LanguagePackStream = t.Extension switch
-                {
-                    ".xml" => new XmlStream(filepath),
-                    ".json" => new JsonStream(filepath),
-                    _ => new NullStream(),
-                };
-
+              
+                    StreamBase LanguagePackStream = t.Extension switch
+                    {
+                        ".xml" => new XmlStream(filepath),
+                        ".json" => new JsonStream(filepath),
+                        _ => new NullStream(),
+                    };
+              
                 LanguagePackStream.Load();
                 StreamBase.RegisterPacks(LanguagePackStream);
+                 
             }
         }
 

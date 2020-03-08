@@ -1,29 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup> 
-      <TargetFramework>net461</TargetFramework>  
+      <TargetFramework>net48</TargetFramework>  
     <ApplicationIcon /> 
     <OutputType>Library</OutputType> 
     <StartupObject />
     <LangVersion>8</LangVersion> 
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild> 
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
   <!-- Nuget -->
   <PropertyGroup>
     <PackageLicenseExpression>MIT</PackageLicenseExpression> 
     <RepositoryUrl>https://github.com/rasyidf/Rasyidf.Localization.git</RepositoryUrl> 
     <RepositoryType>git</RepositoryType> 
-    <AssemblyVersion>0.5.1.0</AssemblyVersion> 
-    <FileVersion>0.5.1.0</FileVersion> 
+    <AssemblyVersion>0.5.2.0</AssemblyVersion> 
+    <FileVersion>0.5.2.0</FileVersion> 
     <PackageProjectUrl>https://github.com/rasyidf/Rasyidf.Localization</PackageProjectUrl> 
     <Copyright>Copyright © 2020 Rasyidf</Copyright> 
     <Description>Fast Dynamic WPF Localization Framework</Description> 
     <Company>Rasyidf</Company> 
     <Authors>Rasyidf</Authors> 
-    <Version>0.5.1</Version> 
+    <Version>0.5.2</Version> 
     <PackageTags>Localization, MultiLanguage, WpfLocalization, CSharp, Internationalization, WPF, Globalization, i18n, l12n</PackageTags> 
     <NeutralLanguage>en-US</NeutralLanguage> 
     <UserSecretsId>f08138ee-0f47-42b4-ae48-d6030f52552d</UserSecretsId> 
-    <SignAssembly>true</SignAssembly> 
+    <SignAssembly>false</SignAssembly> 
     <AssemblyOriginatorKeyFile>rasyidf.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup> 
   

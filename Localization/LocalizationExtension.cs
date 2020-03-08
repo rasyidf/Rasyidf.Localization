@@ -8,7 +8,7 @@ namespace Rasyidf.Localization
 {
     /// <summary>
     /// Localize Extension
-    /// use Tr [default], uid=[uid]
+    ///  Tr [default], uid=[uid]
     /// </summary>
     [ContentProperty("Parameters")]
     public class Tr : MarkupExtension
