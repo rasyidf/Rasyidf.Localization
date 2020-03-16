@@ -173,7 +173,13 @@ namespace Rasyidf.Localization
         /// <returns></returns>
         public static string GetString(string uid, string valueId, string @default = "")
         {
-            return Current.LanguagePack.Translate(uid, valueId, @default);
+            try {
+                return Current.LanguagePack.Translate(uid, valueId, @default);
+            }
+            catch (Exception e) {
+                Debug.WriteLine("Error with LocalizationService.GetString method.\n" + e.ToString());
+                return @default;
+            }
         }
     }
 
