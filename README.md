@@ -21,7 +21,7 @@ Then register the the services on App.cs
         {
             base.OnStartup(e);
             // set the language packs folder and default language
-            LanguageService.Current.Initialize("Assets/Languages", "en-US");
+            LocalizationService.Current.Initialize("Assets", "en-US");
         }
         ...
 ```
@@ -30,7 +30,7 @@ Then register the the services on App.cs
 
 after installing and loading th assembly, add namespace in the xaml 
 ``` xml
-xmlns:rf="clr-namespace:Rasyidf.Localization;assembly=Rasyidf.Localization"
+xmlns:rf="http://rasyidf.github.io/Localisation"
 ```
 All set, now you can implement Binding in any XAML like this:
 
