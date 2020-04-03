@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Threading;
 using System.Linq;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace Rasyidf.Localization
 {
@@ -22,6 +23,17 @@ namespace Rasyidf.Localization
         #endregion Fields
 
         #region Properties
+        // Assembly Directory
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
 
         /// <summary>
         ///
@@ -110,10 +122,11 @@ namespace Rasyidf.Localization
         /// <param name="path"></param>
         public static void ScanLanguagesInFolder(string path)
         {
+            path = ResolvePath(path);
+
             if (!Directory.Exists(path))
             {
                 Debug.Print($"Path {path} doesn't exist");
-                return;
             }
 
             var di = new DirectoryInfo(path);
@@ -134,6 +147,23 @@ namespace Rasyidf.Localization
                 LanguagePackStream.Load();
                 StreamBase.RegisterPacks(LanguagePackStream);
                  
+            }
+        }
+
+        private static string ResolvePath(string p)
+        {
+            if (Directory.Exists(p))
+            {
+                return p;
+            }
+            var staticpath = Path.Combine(AssemblyDirectory, p);
+            if (Directory.Exists(staticpath))
+            {
+                return staticpath;
+            } else
+            {
+                throw new LocalizationException($"Localization path {p} doesn't exist");
+
             }
         }
 
