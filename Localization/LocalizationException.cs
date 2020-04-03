@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System;
-using System.Globalization;
+﻿using System;
+using System.Collections;
 using System.Runtime.Serialization;
 
 namespace Rasyidf.Localization

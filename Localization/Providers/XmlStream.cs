@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Xml;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 namespace Rasyidf.Localization
 {
     public class XmlStream : StreamBase
@@ -16,8 +16,8 @@ namespace Rasyidf.Localization
 
         protected override void OnLoad()
         {
-            var xmlDocument = new XmlDocument() { XmlResolver = null }; 
-            xmlDocument.Load(Path); 
+            var xmlDocument = new XmlDocument() { XmlResolver = null };
+            xmlDocument.Load(Path);
             var docElement = xmlDocument.DocumentElement;
 
             if (docElement == null) return;

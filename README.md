@@ -30,7 +30,7 @@ Then register the the services on App.cs
 
 after installing and loading th assembly, add namespace in the xaml 
 ``` xml
-xmlns:rf="http://rasyidf.github.io/Localisation"
+xmlns:rf="https://rasyidf.github.io/Rasyidf.Localization"
 ```
 All set, now you can implement Binding in any XAML like this:
 
@@ -144,6 +144,10 @@ The Language Pack can be XML or JSON like below, put in the language folder:
 All Done :)
 
 ## What is new
+
+0.5.3
+* Add Localized String - thanks to [SKProCH](https://github.com/SKProCH)
+* Fixed Missing Assets location.
 
 0.5.2
 * Now rf:Tr will automatically find Uid and Property name based on markup.

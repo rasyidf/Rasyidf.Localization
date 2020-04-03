@@ -247,8 +247,8 @@ namespace Rasyidf.Localization
             }
             if (json[0] == '[' && json[jsonLength - 1] == ']')
             {
-                var items = Split(json);  
-                return items.Select(ParseAnonymousValue).ToList<object>();  
+                var items = Split(json);
+                return items.Select(ParseAnonymousValue).ToList<object>();
             }
             if (json[0] == '\"' && json[jsonLength - 1] == '\"')
             {

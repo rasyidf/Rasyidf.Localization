@@ -1,12 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
-using System.Threading;
-using System.Linq;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace Rasyidf.Localization
 {
@@ -136,17 +136,17 @@ namespace Rasyidf.Localization
             foreach (var t in files)
             {
                 var filepath = path + @"\" + t.Name;
-              
-                    StreamBase LanguagePackStream = t.Extension switch
-                    {
-                        ".xml" => new XmlStream(filepath),
-                        ".json" => new JsonStream(filepath),
-                        _ => new NullStream(),
-                    };
-              
+
+                StreamBase LanguagePackStream = t.Extension switch
+                {
+                    ".xml" => new XmlStream(filepath),
+                    ".json" => new JsonStream(filepath),
+                    _ => new NullStream(),
+                };
+
                 LanguagePackStream.Load();
                 StreamBase.RegisterPacks(LanguagePackStream);
-                 
+
             }
         }
 
@@ -160,7 +160,8 @@ namespace Rasyidf.Localization
             if (Directory.Exists(staticpath))
             {
                 return staticpath;
-            } else
+            }
+            else
             {
                 throw new LocalizationException($"Localization path {p} doesn't exist");
 
@@ -205,10 +206,12 @@ namespace Rasyidf.Localization
         /// <returns></returns>
         public static string GetString(string uid, string valueId, string @default = "")
         {
-            try {
+            try
+            {
                 return Current.LanguagePack.Translate(uid, valueId, @default);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Debug.WriteLine("Error with LocalizationService.GetString method.\n" + e.ToString());
                 return @default;
             }

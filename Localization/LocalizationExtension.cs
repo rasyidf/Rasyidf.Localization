@@ -51,7 +51,7 @@ namespace Rasyidf.Localization
         /// Get or set the Unique Identifier
         /// </summary>
         public string Uid { get; set; }
-        
+
         public string Vid { get; set; }
 
         /// <summary>
@@ -99,18 +99,22 @@ namespace Rasyidf.Localization
         public static readonly DependencyProperty VidProperty = DependencyProperty.RegisterAttached(
             "Vid", typeof(string), typeof(Tr), new PropertyMetadata(default(string)));
 
-        public static void SetVid(DependencyObject element, string value) {
-            if (element == null) {
+        public static void SetVid(DependencyObject element, string value)
+        {
+            if (element == null)
+            {
                 throw new ArgumentNullException(nameof(element));
             }
             element.SetValue(VidProperty, value);
         }
 
-        public static string GetVid(DependencyObject element) {
-            if (element == null) {
+        public static string GetVid(DependencyObject element)
+        {
+            if (element == null)
+            {
                 throw new ArgumentNullException(nameof(element));
             }
-            return (string) element.GetValue(VidProperty);
+            return (string)element.GetValue(VidProperty);
         }
         #endregion
 

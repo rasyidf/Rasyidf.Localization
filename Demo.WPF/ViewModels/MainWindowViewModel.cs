@@ -1,11 +1,8 @@
 ﻿using Demo.WPF.Helpers;
+
 using Rasyidf.Localization;
-using System;
-using System.Collections.Generic;
+
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -42,18 +39,18 @@ namespace Demo.WPF.ViewModels
         {
             if (value != null)
             {
-                LocalizationService.Current.ChangeLanguage(value); 
+                LocalizationService.Current.ChangeLanguage(value);
             }
         }
 
         private ObservableCollection<LocalizationDictionary> _cultures = new ObservableCollection<LocalizationDictionary>();
         private LocalizationDictionary _selectedPack;
-        private ObservableCollection<MenuItem> _cultureMenus = new ObservableCollection<MenuItem>(); 
+        private ObservableCollection<MenuItem> _cultureMenus = new ObservableCollection<MenuItem>();
         public ObservableCollection<LocalizationDictionary> Cultures
         {
             get => _cultures; set
-            { 
-                Set(ref _cultures,value);
+            {
+                Set(ref _cultures, value);
             }
         }
         public ObservableCollection<MenuItem> CultureMenus
