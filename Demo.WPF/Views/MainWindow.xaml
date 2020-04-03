@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:demo="clr-namespace:Demo.WPF.ViewModels"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ul="clr-namespace:Rasyidf.Localization;assembly=Rasyidf.Localization"
+    xmlns:ul="https://rasyidf.github.io/Rasyidf.Localization"
     x:Name="Root"
     x:Uid="Root"
     Width="450"
